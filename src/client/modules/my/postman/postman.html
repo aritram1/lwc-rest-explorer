@@ -18,12 +18,20 @@
         </div>
         <div class="bottom">
             <div class="history">
-                <template for:each={history} for:item='ep'>
-                    <template if:true={ep.success}>
-                        <li class="history--item" key={ep.id} onclick={handleLineItemClick}>{ep.value}</li>
+                <template for:each={history} for:item='endpoint'>
+                    <template if:true={endpoint.success}>
+                        <li class="history--item" 
+                            key={endpoint.id}
+                            name={endpoint.ep}
+                            onclick={handleLineItemClick}>
+                            {endpoint.value}
+                        </li>
                     </template>
-                    <template if:false={ep.success}>
-                        <li class="history--item history--item__disabled" key={ep.id}>{ep.value}</li>
+                    <template if:false={endpoint.success}>
+                        <li class="history--item history--item__disabled" 
+                            key={endpoint.id}>
+                            {endpoint.value}
+                        </li>
                     </template>
                 </template>
             </div>

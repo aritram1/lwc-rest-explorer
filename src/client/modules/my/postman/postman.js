@@ -29,7 +29,8 @@ export default class Postman extends LightningElement {
             this.response = JSON.stringify(data);
             this.history.unshift({
                 id: Math.random(1),
-                value: this.endpoint,
+                ep: this.endpoint,
+                value: this.endpoint.length < 30 ? this.endpoint : this.endpoint.substr(0,30) + '....',
                 success: true
             });
             this.timetaken = Date.now() - start_time;
@@ -39,7 +40,8 @@ export default class Postman extends LightningElement {
             this.response = `Error occurred with status : ${error}`;
             this.history.unshift({
                 id: Math.random(1),
-                value: this.endpoint,
+                ep: this.endpoint,
+                value: this.endpoint.length < 30 ? this.endpoint : this.endpoint.substr(0,30) + '....',
                 success: false
             });
             this.timetaken = Date.now() - start_time;
