@@ -1,0 +1,34 @@
+<template>
+  <div class="postman">
+    <div class="container">
+        <div class="header">
+            <img src="../../../resources/lwc.png"/>
+            <div class="appname">Postman Clone</div>
+            <div class="time">{timetaken} ms </div>
+        </div>
+        <div class="top">
+            <select name="methods" id="methods" onclick={handleRequestTypeChange}>
+                <option value="GET">GET</option>
+                <option value="POST">POST</option>
+                <option value="PUT">PUT</option>
+                <option value="DELETE">DELETE</option>
+            </select>
+            <input class="top--input" placeholder="api.google.com" type="text" value={endpoint} onchange={handleChange}/>
+            <input class="container--button" type="button" value="Submit" name="btnSubmit" onclick={handleClick}/>
+        </div>
+        <div class="bottom">
+            <div class="history">
+                <template for:each={history} for:item='ep'>
+                    <template if:true={ep.success}>
+                        <li class="history--item" key={ep.id} onclick={handleLineItemClick}>{ep.value}</li>
+                    </template>
+                    <template if:false={ep.success}>
+                        <li class="history--item history--item__disabled" key={ep.id}>{ep.value}</li>
+                    </template>
+                </template>
+            </div>
+            <div class="response">{response}</div>
+        </div>
+      </div>
+  </div>
+</template>
