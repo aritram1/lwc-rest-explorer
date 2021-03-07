@@ -2,7 +2,7 @@ import { LightningElement, track, api } from 'lwc';
 
 
 export default class Postman extends LightningElement {
-    endpoint = 'http://0.0.0.0:3002'; //''https://jsonplaceholder.typicode.com/posts/'; //'http://localhost:3002/'; //'
+    endpoint = 'https://dog.ceo/api/breeds/image/random';//'http://0.0.0.0:3002'; //''https://jsonplaceholder.typicode.com/posts/';
     @track history=[];
     @track response = 'Default response';
     @track timetaken = '00';
@@ -14,7 +14,11 @@ export default class Postman extends LightningElement {
         //this.endpoint = document.querySelector('.top--ibar').value;
         console.log(`Endpoint is : ${this.endpoint}`);
         let start_time = Date.now();
-        fetch(this.endpoint, {method : this.method, headers: { 'Content-Type': 'application/json'}, mode: 'no-cors'})
+        fetch(this.endpoint, {
+            method : this.method, 
+            // headers: {'Content-Type': 'application/json'},
+            // mode: 'no-cors'
+        })
         .then(resp =>{
             console.log(resp.status);
             if(resp.status != 200) throw new Error(resp.status);
@@ -22,7 +26,7 @@ export default class Postman extends LightningElement {
         })
         .then(data=>{
             console.log(data);
-            this.response = JSON.stringify(data, undefined, 4);
+            this.response = JSON.stringify(data);
             this.history.unshift({
                 id: Math.random(1),
                 value: this.endpoint,
@@ -44,7 +48,7 @@ export default class Postman extends LightningElement {
     
     handleChange(event){
         console.log(`Value input as : ${event.target.value}`);
-        this.endpoint = event.target.value; //TBD
+        this.endpoint = event.target.value;
     }
 
     handleRequestTypeChange(event){
@@ -52,9 +56,8 @@ export default class Postman extends LightningElement {
         this.method = event.target.value;
     }
 
-    //TBD
     handleLineItemClick(event){
-        this.endpoint = event.target.value;
+        this.endpoint = event.target.textContent;
         console.log('inside handleLineItemClick:' + this.endpoint);
         this.handleClick(event);
     }

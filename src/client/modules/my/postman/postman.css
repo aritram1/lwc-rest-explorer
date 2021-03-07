@@ -33,7 +33,7 @@
 }
 
 .bottom{
-    background-color:maroon;
+    background-color:white;
     display: grid;
     grid-template-columns: 1fr 4fr;
     height: 100%;
@@ -44,14 +44,16 @@
 }
 .history--item{
     list-style-type: none;
-    color: green;
+    color: #149214;
 }
 .history--item__disabled{
     color: red;
 }
 .response{
     background-color: #559c55;
-    margin: 2px;    
+    margin: 2px;   
+    text-align: left; 
+    
 }
 .header{
     display: grid;
