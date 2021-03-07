@@ -1,42 +1,44 @@
 <template>
-  <div class="postman">
-    <div class="container">
-        <div class="header">
-            <img src="../../../resources/lwc.png"/>
-            <div class="appname">Postman Clone</div>
-            <div class="time">{timetaken} ms </div>
-        </div>
-        <div class="top">
-            <select name="methods" id="methods" onclick={handleRequestTypeChange}>
-                <option value="GET">GET</option>
-                <option value="POST">POST</option>
-                <option value="PUT">PUT</option>
-                <option value="DELETE">DELETE</option>
-            </select>
-            <input class="top--input" placeholder="api.google.com" type="text" value={endpoint} onchange={handleChange}/>
-            <input class="container--button" type="button" value="Submit" name="btnSubmit" onclick={handleClick}/>
-        </div>
-        <div class="bottom">
-            <div class="history">
-                <template for:each={history} for:item='endpoint'>
-                    <template if:true={endpoint.success}>
-                        <li class="history--item" 
-                            key={endpoint.id}
-                            name={endpoint.ep}
-                            onclick={handleLineItemClick}>
-                            {endpoint.value}
-                        </li>
-                    </template>
-                    <template if:false={endpoint.success}>
-                        <li class="history--item history--item__disabled" 
-                            key={endpoint.id}>
-                            {endpoint.value}
-                        </li>
-                    </template>
-                </template>
+    <div class="postman">
+        <div class="container">
+            <div class="header">
+                <img src="../../../resources/lwc.png"/>
+                <div class="appname">Postman Clone</div>
+                <div class="time">{timetaken} ms </div>
             </div>
-            <div class="response">{response}</div>
+            <div class="top">
+                <select name="methods" id="methods" onclick={handleRequestTypeChange}>
+                    <option value="GET">GET</option>
+                    <option value="POST">POST</option>
+                    <option value="PUT">PUT</option>
+                    <option value="DELETE">DELETE</option>
+                </select>
+                <input class="top--input" placeholder="api.google.com" type="text" value={endpoint} onchange={handleChange}/>
+                <input class="container--button" type="button" value="Submit" name="btnSubmit" onclick={handleClick}/>
+            </div>
+            <div class="bottom">
+                <div class="history">
+                    <template for:each={history} for:item='endpoint'>
+                        <template if:true={endpoint.success}>
+                            <li class="history--item" 
+                                key={endpoint.id}
+                                name={endpoint.ep}
+                                style={endpoint.style}
+                                onclick={handleLineItemClick}>
+                                {endpoint.value}
+                            </li>
+                        </template>
+                        <template if:false={endpoint.success}>
+                            <li class="history--item history--item__disabled" 
+                                style={endpoint.style}
+                                key={endpoint.id}>
+                                {endpoint.value}
+                            </li>
+                        </template>
+                    </template>
+                </div>
+                <div class="response">{response}</div>
+            </div>
         </div>
-      </div>
-  </div>
+    </div>
 </template>

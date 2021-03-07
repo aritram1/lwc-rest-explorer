@@ -1,19 +1,17 @@
 *{
     padding: 2px;
     margin :2px;
+    /* border: 1px solid  rgba(5, 122, 218, 0.3); */    
 }
-/* .postman{
-    padding: 20px;
-    margin :20px;
-    height: 30%;
-    width: 30%;
-} */
-.container{
+.postman{
     background-color: aliceblue;
     border: 2px solid black;
     border-radius: 5px;
 }
-
+.container{
+    padding: 4% 4% 4% 4%;
+    border: 10px solid white;
+}
 .top{
     display: grid;
     grid-template-columns: 1fr 10fr 1fr;
@@ -37,22 +35,43 @@
     display: grid;
     grid-template-columns: 1fr 5fr;
     height: 100%;
+    /* border: 1px solid  rgba(5, 122, 218, 0.3);     */
+
 }
 .history{
-    background-color: #bfcaa8;
-    margin: 2px;
+    margin: 3px;
+    border-radius: 2px;
+    background-color: rgba(5, 122, 218, 0.3);
+    color: white;
 }
 .history--item{
     list-style-type: none;
-    color: #149214;
+    /* color: black; */
 }
-.history--item__disabled{
-    color: red;
+/* .history--item:nth-of-type(odd){
+    background-color: rgb(5, 122, 218);
 }
+.history--item:nth-of-type(even){
+    background-color: rgb(85, 122, 218);
+} */
+    
+/* .history--item__disabled{
+    color: #ad4343;
+} */
 .response{
-    background-color: hsl(120, 16%, 51%);
+    /* background-color: teal; */
+    border: 1px solid  rgba(5, 122, 218, 0.3);    
+
+    background-color: white;
+    background-image: linear-gradient(to left #385be9e5, #505875e5);
+    border-radius: 2px;
     margin: 2px;   
+    padding:2px;
     text-align: left; 
+    color: black;
+    white-space: pre-wrap;
+    /* white-space: pre-line; 
+    pre-line will remove the spaces */
 }
 .header{
     display: grid;
@@ -64,7 +83,6 @@
 }
 
 .appname{
-    /* color: green; */
     font-size: 30px;
     padding-top: 15px;
     text-align: center;
@@ -73,7 +91,6 @@
     background-color: antiquewhite;
     text-align: center;
     padding: 24px;
-    /* 14%; */
     border-radius: 10px;
     border: 1px solid black;
 }
