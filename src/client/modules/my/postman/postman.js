@@ -59,7 +59,7 @@ export default class Postman extends LightningElement {
     }
 
     handleLineItemClick(event){
-        this.endpoint = event.target.textContent;
+        this.endpoint = event.target.getAttributeNode("name").value;//event.target.textContent;
         console.log('inside handleLineItemClick:' + this.endpoint);
         this.handleClick(event);
     }

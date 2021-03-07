@@ -50,10 +50,9 @@
     color: red;
 }
 .response{
-    background-color: #559c55;
+    background-color: hsl(120, 16%, 51%);
     margin: 2px;   
     text-align: left; 
-
 }
 .header{
     display: grid;
