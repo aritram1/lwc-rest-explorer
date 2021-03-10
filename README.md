@@ -10,6 +10,7 @@ The source files are located in the [`src`](./src) folder. The web component (ap
 - Maintain history of the requests sent (in a session)
 - Rerun any previous request from history section
 - The requests are color coded. The unsuccessfull ones are marked with red.
+- Provides the time taken to complete the request.
 - More ...
 
 # Screenshot
