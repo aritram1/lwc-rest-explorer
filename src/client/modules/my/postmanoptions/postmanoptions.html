@@ -1,0 +1,32 @@
+<template>
+    <!-- Tab links -->
+    <div class="tab">
+        <div class="tablinks" name="Authorization" onclick={handleTabClick}>Authorization</div>
+        <div class="tablinks" name="Headers" onclick={handleTabClick}>Header</div>
+        <div class="tablinks" name="Body" onclick={handleTabClick}>Body</div>
+    </div>
+    
+    <!-- Tab content -->
+    <template if:true={showAuth}>
+        <div id="Authorization" class="tabContent">
+            <div>Type</div>
+            <select name="methods" id="methods" onclick={handleAuthTypeTypeChange}>
+                <option value="NOAUTH">No Authorization</option>
+                <option value="BASIC">Basic</option>
+                <option value="OAUTH2">OAuth 2.0</option>
+            </select>
+        </div>
+    </template>
+    
+    <template if:true={showHeaders}>
+        <div id="Headers" onupdate={handleDataTableUpdate} class="tabContent">
+            <my-datatable></my-datatable>
+        </div>
+    </template>
+    
+    <template if:true={showBody}>
+        <div id="Body" class="tabContent">
+            <textarea name="message" rows="10" cols="30" class="inputBody" placeholder="Enter the request body here"></textarea>
+        </div>
+    </template>
+</template>

@@ -90,11 +90,14 @@ export default class Postman extends LightningElement {
     process(data){
         console.log(JSON.stringify(data, undefined, 4));
         return JSON.stringify(data, undefined, 4);
-        // let r = "";
-        // for(let d in data){
-        //     r += "\n\n\n\n\n"+ d+ ":"+data[d];
-        // }
-        // console.log(r)
-        // return r;
+    }
+
+    tabClick(e){
+        const allTabs = document.querySelectorAll('ul>li');
+        allTabs.forEach( (elm, idx) =>{
+            console.log(elm);
+            elm.classList.remove("slds-is-active")
+        })
+        e.currentTarget.classList.add('slds-is-active')
     }
 }

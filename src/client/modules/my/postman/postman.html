@@ -16,6 +16,10 @@
                 <input class="top--input" placeholder="api.google.com" type="text" value={endpoint} onchange={handleChange}/>
                 <input class="container--button" type="button" value="Submit" name="btnSubmit" onclick={handleClick}/>
             </div>
+            
+            <div class="center">
+                <my-postmanoptions method={method}></my-postmanoptions>
+            </div>
             <div class="bottom">
                 <div class="history">
                     <template for:each={history} for:item='endpoint'>
