@@ -10,6 +10,9 @@ export default class Postman extends LightningElement {
     @track response = 'Response will appear here';
     @track timetaken = '00';
     @track method = 'GET';
+    @track body;
+    @track headers;
+    @track auth;
 
     itemstyle = "background-color: rgba(5, 122, 218, 0)";
     alpha = 0;
@@ -99,5 +102,10 @@ export default class Postman extends LightningElement {
             elm.classList.remove("slds-is-active")
         })
         e.currentTarget.classList.add('slds-is-active')
+    }
+
+    handleUpdateRequestBody(e){
+        this.body = e.detail.requestbody;
+        console.log('Inside handleUpdateRequestBody->' + this.body);
     }
 }

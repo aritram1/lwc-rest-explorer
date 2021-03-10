@@ -29,6 +29,10 @@ export default class Postmanoptions extends LightningElement {
         }
     }
 
+    connectedCallback(){
+        this.body = '';
+    }
+
     handleAuthTypeTypeChange(e){
         this.auth = e.target.value;
         console.log('handleAuthTypeTypeChange->' + this.auth);
@@ -38,6 +42,18 @@ export default class Postmanoptions extends LightningElement {
         this.headers = e.detail.headers;
         console.log('Inside handleDataTableUpdate' + this.headers);
 
+    }
+
+    handleRequestBodyUpdate(e){
+        this.body = e.target.value;
+        console.log('Inside handleRequestBodyUpdate ->' + this.body);
+        const event_RequestBodyUpdate = new CustomEvent('requestbody',{
+                detail:{
+                    requestbody : this.body
+                }
+            }
+        );
+        this.dispatchEvent(event_RequestBodyUpdate);
     }
     
     handleTabClick(e){

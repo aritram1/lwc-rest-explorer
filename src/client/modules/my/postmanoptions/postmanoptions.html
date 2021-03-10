@@ -26,7 +26,11 @@
     
     <template if:true={showBody}>
         <div id="Body" class="tabContent">
-            <textarea name="message" rows="10" cols="30" class="inputBody" placeholder="Enter the request body here"></textarea>
+            <textarea name="message" rows="10" cols="30" class="inputBody" 
+                      placeholder="Enter the request body here" 
+                      oninput={handleRequestBodyUpdate}>
+                {body}
+            </textarea>
         </div>
     </template>
 </template>
