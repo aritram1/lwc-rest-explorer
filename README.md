@@ -15,3 +15,4 @@ The source files are located in the [`src`](./src) folder. The web component (ap
 
 # Screenshot
 ![Demo.png](https://github.com/aritram1/lwc-rest-explorer/blob/main/src/client/modules/my/postman/Demo.png?raw=true)
+![Demo2.png](https://github.com/aritram1/lwc-rest-explorer/blob/main/src/client/modules/my/postman/Demo2.png?raw=true)
