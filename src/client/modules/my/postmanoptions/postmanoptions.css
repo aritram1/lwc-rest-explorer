@@ -27,12 +27,10 @@
     background-color: #ccc;
   }
   
-  /* Style the tab content */
-  .tabContent {
-    /* padding: 6px 6px; */
-    
-    /* border-top: none; */
-  }
+  /* .tabContent {
+    padding: 6px 6px;
+    border-top: none;
+  } */
   
   .authchoices{
     padding : 1%;
@@ -44,7 +42,7 @@
 
   .authdetails{
     display: grid;
-    grid-template-columns: 2fr 7fr;
+    grid-template-columns: 2fr 8fr;
     padding : 1%;
     border: 1px solid #ccc;
   }
