@@ -29,17 +29,27 @@
   /* Style the tab content */
   .tabContent {
     padding: 6px 6px;
-    border: 1px solid #ccc;
-    border-top: none;
+    
+    /* border-top: none; */
+  }
+  
+  .auth{
+    padding : 1%;
     display: grid;
     grid-auto-flow: column;
+    grid-template-columns: 1fr 12fr;
+    border: 1px solid #ccc;
   }
 
-  .tabContent .body{
-    width: 1040px;
+  .body{
+    width: 99.2%;
     height: 200px;
-    border: 1px slid blue;
+    /* border: 1px slid blue; */
+    /* align-self: center; */
+    
   }
+
   textarea {
     resize: none;
+    /* border: 1px solid red; */
   }

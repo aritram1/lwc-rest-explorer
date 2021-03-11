@@ -1,5 +1,5 @@
 import { LightningElement, track, api } from 'lwc';
-
+const DEFAULT_REQUEST_BODY = '{\n \'param\' : \'value\' \n}';
 export default class Postmanoptions extends LightningElement {
     
     @track showAuth;
@@ -9,7 +9,7 @@ export default class Postmanoptions extends LightningElement {
 
     @track auth;
     @track headers;
-    @track body;
+    @track body = DEFAULT_REQUEST_BODY;
 
     @api method;
 
@@ -27,10 +27,6 @@ export default class Postmanoptions extends LightningElement {
         for (let i = 0; i < tablinks.length; i++) {
             tablinks[i].className = tablinks[i].className.replace(" active", "");
         }
-    }
-
-    connectedCallback(){
-        this.body = '';
     }
 
     handleAuthTypeTypeChange(e){

@@ -8,7 +8,7 @@
     
     <!-- Tab content -->
     <template if:true={showAuth}>
-        <div id="Authorization" class="tabContent">
+        <div id="Authorization" class="tabContent auth">
             <div>Type</div>
             <select name="methods" id="methods" onclick={handleAuthTypeTypeChange}>
                 <option value="NOAUTH">No Authorization</option>
@@ -25,9 +25,9 @@
     </template>
     
     <template if:true={showBody}>
-        <div id="Body" class="tabContent">
-            <textarea name="message" rows="10" cols="30" class="inputBody" 
-                      placeholder="Enter the request body here" 
+        <div id="Body" class="tabContent body">
+            <textarea name="message" rows="10" cols="30" 
+                      placeholder="Enter the request body" class="body"
                       oninput={handleRequestBodyUpdate}>
                 {body}
             </textarea>
