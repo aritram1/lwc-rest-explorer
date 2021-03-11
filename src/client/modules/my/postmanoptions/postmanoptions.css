@@ -3,6 +3,7 @@
     overflow: hidden;
     border: 1px solid #ccc;
     background-color: #f1f1f1;
+    border-radius: 4px;
   }
   
   /* Style the buttons that are used to open the tab content */
@@ -62,9 +63,16 @@
   }
   
   .raw{
-    padding-top: 40px;
-    background-color:rgba(5,122,218,.25);
+    /* padding-top: 4px; */
+    background-color:#a1cbec40;
     border-radius: 4px;
+    text-align: top;
+    font-family: Helvetica, sans-serif;
+    font-size: 90%;
+    white-space: pre-wrap;
+    border: 1px solid #ccc;
+    padding: 14px 16px;
+    padding-top: 0px;
   }
 
   .input{
@@ -72,7 +80,6 @@
   }
 
   .error{
-    padding: 2px;
-    color: red;
-    background-color: lightcoral;
+    padding-bottom: 4px;
+    color: #bd3b3b;
   }

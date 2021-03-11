@@ -27,9 +27,9 @@ export default class Postman extends LightningElement {
     }
 
     handleClick(event){
-        console.log(JSON.stringify(this.auth));
-        console.log(this.body);
-        console.log(this.headers);
+        console.log('Auth received as : ' + JSON.stringify(this.auth));
+        console.log('Body received as : ' + JSON.stringify(this.body));
+        console.log('Headers received as : ' + JSON.stringify(this.headers));
 
         console.log(`Button pressed`);
         console.log(`Endpoint is : ${this.endpoint}`);

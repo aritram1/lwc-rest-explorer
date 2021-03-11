@@ -1,7 +1,7 @@
 import { LightningElement, track, api } from 'lwc';
-const DEFAULT_REQUEST_BODY = '{\n "param" : "value" \n}';
+const DEFAULT_REQUEST_BODY = '{\n    "Key" : "Value"\n}';
 const DEFAULT_REQUEST_RAW = 'some specific raw';
-const ERROR_INVALID_JSON_BODY = 'The json is not well formed. Please check';
+const ERROR_INVALID_JSON_BODY = 'The json is not well formed. Please check. Key-Value pairs must be enclosed with double quotes only.';
 export default class Postmanoptions extends LightningElement {
     
     @track showAuth;
@@ -23,12 +23,17 @@ export default class Postmanoptions extends LightningElement {
     @track request;
     get raw(){
         console.log('I am first getter');
-        if (this.request){
-            return JSON.stringify(Object.assign({'method' : this.method}, this.request));
+        let raw_request = Object.assign({}, this.auth, this.headers, JSON.parse(this.body));
+        let raw_text = '';
+        if (raw_request){
+            for(let prop in raw_request){
+                raw_text = raw_text + '\n' + prop + ' - ' + raw_request[prop];
+            }
         }
         else{
-            return DEFAULT_REQUEST_RAW;
+            raw_text = DEFAULT_REQUEST_RAW;
         }
+        return raw_text;
     }
 
     @api method;
@@ -40,47 +45,27 @@ export default class Postmanoptions extends LightningElement {
         this.request = {};
         this.uname='';
         this.pwd='';
-
-        
     }
 
-    // connectedCallback(){
-    //     this.template.querySelector('textarea').addEventListener('keydown', function(e) {
-    //         if (e.key == 'Tab') {
-    //             e.preventDefault();
-    //             var start = this.selectionStart;
-    //             var end = this.selectionEnd;
-            
-    //             // set textarea value to: text before caret + tab + text after caret
-    //             this.value = this.value.substring(0, start) +
-    //             "\t" + this.value.substring(end);
-            
-    //             // put caret at right position again
-    //             this.selectionStart =
-    //             this.selectionEnd = start + 1;
-    //         }
-    //     });
-    // }
     handleTabMovement(e){
         if (e.key == 'Tab') {
             e.preventDefault();
-            let a = document.querySelector('textarea');
-            console.dir(a);
-            // var start = this.selectionStart;
-            // var end = this.selectionEnd;
-            // console.log('start->' + start, + '  ' + 'end-> ' + end);
-            // // set textarea value to: text before caret + tab + text after caret
-            // this.body = this.body.substring(0, start) + "\t" + this.body.substring(end);
+            let tArea = this.template.querySelector('textarea');
+            var start = tArea.selectionStart;
+            var end = tArea.selectionEnd;
+            console.log('start->' + start, + '  ' + 'end-> ' + end);
+
+            // set textarea value to: text before caret + tab + text after caret
+            tArea.value = tArea.value.substring(0, start) + "    " + tArea.value.substring(end);
         
-            // // put caret at right position again
-            // this.selectionStart = this.selectionEnd = start + 1;
+            // put caret at right position again
+            tArea.selectionEnd = start + 4;
         }
     }
 
     handleAuthTypeChange(e){
         console.log('handleAuthTypeChange->' + e.target.value)
         this.auth = e.target.value;
-
         switch(this.auth){
             case 'NOAUTH':
                 this.showBasicAuth = false;
@@ -126,22 +111,23 @@ export default class Postmanoptions extends LightningElement {
     }
 
     handleRequestBodyUpdate(e){
+        this.body = e.target.value;
         console.log('Inside handleRequestBodyUpdate' + e.target.value);
-        let body = e.target.value.replace('\n', '');
+        let body = e.target.value.replace('\n', '').replace('\t', '');
         try{
-            this.body = JSON.parse(body);
-            console.log('After serialization: ' + JSON.stringify(this.body));
+            let ev_body = JSON.parse(body);
+            console.log('After serialization: ' + JSON.stringify(ev_body));
+            this.dispatchEvent(new CustomEvent('bodychange',{
+                detail:{
+                    'bodychange' : ev_body
+                }
+            }));
             this.error = '';
         }
         catch(error){
             console.log('error->' + error);
             this.error = ERROR_INVALID_JSON_BODY;
         }
-        this.dispatchEvent(new CustomEvent('bodychange',{
-            detail:{
-                'bodychange' : this.body
-            }
-        }));
         //this.emit('bodychange', this.body);
     }
 
@@ -182,7 +168,6 @@ export default class Postmanoptions extends LightningElement {
         switch(tabName){
             case 'Authorization':
                 this.showAuth = true;
-                e.target.classl
                 break;
             case 'Headers':
                 this.showHeaders = true;
@@ -191,6 +176,7 @@ export default class Postmanoptions extends LightningElement {
                 if(this.method != 'GET'){
                     this.showBody = true;
                 }
+                //this.body = JSON.parse(JSON.stringify(this.body));
                 break;
             case 'Raw':
                 this.showRaw = true;
