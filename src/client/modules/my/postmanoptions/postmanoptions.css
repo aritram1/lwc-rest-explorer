@@ -63,7 +63,8 @@
   
   .raw{
     padding-top: 40px;
-    background-color: khaki;
+    background-color:rgba(5,122,218,.25);
+    border-radius: 4px;
   }
 
   .input{
