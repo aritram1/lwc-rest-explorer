@@ -28,12 +28,12 @@
   
   /* Style the tab content */
   .tabContent {
-    padding: 6px 6px;
+    /* padding: 6px 6px; */
     
     /* border-top: none; */
   }
   
-  .auth{
+  .authchoices{
     padding : 1%;
     display: grid;
     grid-auto-flow: column;
@@ -41,15 +41,31 @@
     border: 1px solid #ccc;
   }
 
+  .authdetails{
+    display: grid;
+    grid-template-columns: 2fr 7fr;
+    padding : 1%;
+
+  }
+
   .body{
-    width: 99.2%;
-    height: 200px;
-    /* border: 1px slid blue; */
-    /* align-self: center; */
-    
+    /* width: 99.2%; */
+    /* height: 200px; */
+    /* background-color: lawngreen; */
+    padding: 2px;
   }
 
   textarea {
     resize: none;
-    /* border: 1px solid red; */
+    width: 99.2%;
+    padding: 2px;
+  }
+  
+  .raw{
+    padding-top: 40px;
+    background-color: khaki;
+  }
+
+  .input{
+    padding : 1%;
   }

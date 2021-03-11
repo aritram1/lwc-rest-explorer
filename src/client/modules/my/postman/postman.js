@@ -2,20 +2,26 @@ import { LightningElement, track, api } from 'lwc';
 const DEFAULT_GRADIENT_CHANGE = 0.09;
 const DEFAULT_STYLE = "background-color: rgba(5, 122, 218, ";
 const DEFAULT_ERROR_STYLE = "background-color: rgba(255, 0, 0, ";
-
+const DEFAULT_RESPONSE = 'Response will appear here';
 
 export default class Postman extends LightningElement {
+
     endpoint = 'https://dog.ceo/api/breeds/image/random';//'http://0.0.0.0:3002'; //''https://jsonplaceholder.typicode.com/posts/';
-    @track history=[];
-    @track response = 'Response will appear here';
+    itemstyle = "background-color: rgba(5, 122, 218, 0)";
+    alpha = 0;
+    @track history;
+    @track response;
     @track timetaken = '00';
     @track method = 'GET';
     @track body;
     @track headers;
     @track auth;
-
-    itemstyle = "background-color: rgba(5, 122, 218, 0)";
-    alpha = 0;
+    
+    constructor(){
+        super();
+        this.history = [];
+        this.response = DEFAULT_RESPONSE;
+    }
 
     handleClick(event){
         console.log(`Button pressed`);
@@ -95,16 +101,17 @@ export default class Postman extends LightningElement {
         return JSON.stringify(data, undefined, 4);
     }
 
-    tabClick(e){
-        const allTabs = document.querySelectorAll('ul>li');
-        allTabs.forEach( (elm, idx) =>{
-            console.log(elm);
-            elm.classList.remove("slds-is-active")
-        })
-        e.currentTarget.classList.add('slds-is-active')
+    handleAuthChange(e){
+        this.auth = e.detail.requestbody;
+        console.log('Inside handleUpdateRequestBody->' + this.auth);
     }
 
-    handleUpdateRequestBody(e){
+    handleHeadersChange(e){
+        this.headers = e.detail.requestbody;
+        console.log('Inside handleUpdateRequestBody->' + this.headers);
+    }
+
+    handleBodyChange(e){
         this.body = e.detail.requestbody;
         console.log('Inside handleUpdateRequestBody->' + this.body);
     }
