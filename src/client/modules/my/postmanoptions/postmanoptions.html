@@ -1,0 +1,62 @@
+<template>
+    <!-- Tab links -->
+    <div class="tab">
+        <div class="tablinks" name="Authorization" onclick={handleTabClick}>Authorization</div>
+        <div class="tablinks" name="Headers" onclick={handleTabClick}>Header</div>
+        <div class="tablinks" name="Body" onclick={handleTabClick}>Body</div>
+        <div class="tablinks" name="Raw" onclick={handleTabClick}>Raw</div>
+    </div>
+    
+    <!-- Tab content -->
+    <template if:true={showAuth}>
+        <div id="Authorization" class="tabContent auth">
+            <div class="authchoices">
+                <div>Type</div>
+                <select name="methods" id="methods" onclick={handleAuthTypeChange}>
+                    <option value="NOAUTH">No Authorization</option>
+                    <option value="BASIC">Basic</option>
+                    <option value="OAUTH2">OAuth 2.0</option>
+                </select>
+            </div>
+            <template if:true={showAuthDetails}>
+                <div class="authdetails">
+                    <template if:true={showBasicAuth}>
+                        <div> User Name </div>
+                        <input class="auth-username" name="uname" placeholder="Enter username" type="text" value={uname}/>
+                        <div> Password </div>
+                        <input class="auth-password" name="pwd" placeholder="Enter password" type="text" value={pwd}/>
+                        <br/>
+                        <input class="auth--button" name="btnAuthSubmit"  type="button" value="Add" onclick={updateAuth}/>
+                    </template>
+                    <template if:true={showOAuth2}>
+                        Now in oAUth 2
+                    </template>
+                    
+                </div>
+            </template>
+        </div>
+    </template>
+    
+    <template if:true={showHeaders}>
+        <div id="Headers" onupdate={handleDataTableUpdate} class="tabContent">
+            <my-datatable></my-datatable>
+        </div>
+    </template>
+    
+    <template if:true={showBody}>
+        <div id="Body" class="tabContent body">
+            <textarea name="message" rows="10" cols="30" 
+                      placeholder="Enter the request body"
+                      oninput={handleRequestBodyUpdate}>
+                {body}
+            </textarea>
+        </div>
+    </template>
+
+    <template if:true={showRaw}>
+        <div id="Raw" class="tabContent raw">
+            {raw_text}
+        </div>
+    </template>
+
+</template>
