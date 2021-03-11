@@ -8,11 +8,11 @@ export default class Postman extends LightningElement {
 
     endpoint = 'https://dog.ceo/api/breeds/image/random';//'http://0.0.0.0:3002'; //''https://jsonplaceholder.typicode.com/posts/';
     itemstyle = "background-color: rgba(5, 122, 218, 0)";
-    alpha = 0;
+    alpha;
     @track history;
     @track response;
-    @track timetaken = '00';
-    @track method = 'GET';
+    @track timetaken;
+    @track method;
     @track body;
     @track headers;
     @track auth;
@@ -21,15 +21,22 @@ export default class Postman extends LightningElement {
         super();
         this.history = [];
         this.response = DEFAULT_RESPONSE;
+        this.timetaken = '00';
+        this.method = 'POST';
+        this.alpha = 0;
     }
 
     handleClick(event){
+        console.log(JSON.stringify(this.auth));
+        console.log(this.body);
+        console.log(this.headers);
+
         console.log(`Button pressed`);
         console.log(`Endpoint is : ${this.endpoint}`);
         let start_time = Date.now();
         fetch(this.endpoint, {
             method : this.method, 
-            // headers: {'Content-Type': 'application/json'},
+            //  headers: {'Content-Type': 'application/json'},
             // mode: 'no-cors'
         })
         .then(resp =>{
@@ -102,17 +109,17 @@ export default class Postman extends LightningElement {
     }
 
     handleAuthChange(e){
-        this.auth = e.detail.requestbody;
-        console.log('Inside handleUpdateRequestBody->' + this.auth);
+        this.auth = Object.assign({}, e.detail.authchange);
+        console.log('Inside handleAuthChange->' + JSON.stringify(this.auth));
     }
 
     handleHeadersChange(e){
-        this.headers = e.detail.requestbody;
-        console.log('Inside handleUpdateRequestBody->' + this.headers);
+        this.headers = e.detail.headerschange;
+        console.log('Inside handleHeadersChange->' + JSON.stringify(this.headers));
     }
 
     handleBodyChange(e){
-        this.body = e.detail.requestbody;
-        console.log('Inside handleUpdateRequestBody->' + this.body);
+        this.body = e.detail.bodychange;
+        console.log('Inside handleBodyChange->' + JSON.stringify(this.body));
     }
 }

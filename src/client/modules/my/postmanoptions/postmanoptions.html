@@ -1,4 +1,7 @@
 <template>
+    <template if:true={error}>
+        <div class="error">{error}</div>
+    </template>
     <!-- Tab links -->
     <div class="tab">
         <div class="tablinks" name="Authorization" onclick={handleTabClick}>Authorization</div>
@@ -18,22 +21,19 @@
                     <option value="OAUTH2">OAuth 2.0</option>
                 </select>
             </div>
-            <template if:true={showAuthDetails}>
-                <div class="authdetails">
-                    <template if:true={showBasicAuth}>
+                <template if:true={showBasicAuth}>
+                    <div class="authdetails">
                         <div> User Name </div>
                         <input class="auth-username" name="uname" placeholder="Enter username" type="text" value={uname}/>
                         <div> Password </div>
                         <input class="auth-password" name="pwd" placeholder="Enter password" type="text" value={pwd}/>
                         <br/>
                         <input class="auth--button" name="btnAuthSubmit"  type="button" value="Add" onclick={updateAuth}/>
-                    </template>
-                    <template if:true={showOAuth2}>
-                        Now in oAUth 2
-                    </template>
-                    
-                </div>
-            </template>
+                    </div>
+                </template>
+                <template if:true={showOAuth2}>
+                    Now in oAUth 2
+                </template>
         </div>
     </template>
     
@@ -47,7 +47,8 @@
         <div id="Body" class="tabContent body">
             <textarea name="message" rows="10" cols="30" 
                       placeholder="Enter the request body"
-                      oninput={handleRequestBodyUpdate}>
+                      oninput={handleRequestBodyUpdate}
+                      onkeydown={handleTabMovement}>
                 {body}
             </textarea>
         </div>

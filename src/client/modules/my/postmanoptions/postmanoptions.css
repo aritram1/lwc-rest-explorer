@@ -45,7 +45,7 @@
     display: grid;
     grid-template-columns: 2fr 7fr;
     padding : 1%;
-
+    border: 1px solid #ccc;
   }
 
   .body{
@@ -69,4 +69,10 @@
 
   .input{
     padding : 1%;
+  }
+
+  .error{
+    padding: 2px;
+    color: red;
+    background-color: lightcoral;
   }

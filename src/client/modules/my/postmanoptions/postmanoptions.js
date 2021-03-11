@@ -1,6 +1,7 @@
 import { LightningElement, track, api } from 'lwc';
-const DEFAULT_REQUEST_BODY = '{\n \'param\' : \'value\' \n}';
+const DEFAULT_REQUEST_BODY = '{\n "param" : "value" \n}';
 const DEFAULT_REQUEST_RAW = 'some specific raw';
+const ERROR_INVALID_JSON_BODY = 'The json is not well formed. Please check';
 export default class Postmanoptions extends LightningElement {
     
     @track showAuth;
@@ -11,9 +12,7 @@ export default class Postmanoptions extends LightningElement {
     @track auth;
     @track showBasicAuth;
     @track showOAuth2;
-    get showAuthDetails(){
-        return this.showBasicAuth || this.showOAuth2;
-    }
+    @track error;
 
 
     @track uname;
@@ -41,6 +40,41 @@ export default class Postmanoptions extends LightningElement {
         this.request = {};
         this.uname='';
         this.pwd='';
+
+        
+    }
+
+    // connectedCallback(){
+    //     this.template.querySelector('textarea').addEventListener('keydown', function(e) {
+    //         if (e.key == 'Tab') {
+    //             e.preventDefault();
+    //             var start = this.selectionStart;
+    //             var end = this.selectionEnd;
+            
+    //             // set textarea value to: text before caret + tab + text after caret
+    //             this.value = this.value.substring(0, start) +
+    //             "\t" + this.value.substring(end);
+            
+    //             // put caret at right position again
+    //             this.selectionStart =
+    //             this.selectionEnd = start + 1;
+    //         }
+    //     });
+    // }
+    handleTabMovement(e){
+        if (e.key == 'Tab') {
+            e.preventDefault();
+            let a = document.querySelector('textarea');
+            console.dir(a);
+            // var start = this.selectionStart;
+            // var end = this.selectionEnd;
+            // console.log('start->' + start, + '  ' + 'end-> ' + end);
+            // // set textarea value to: text before caret + tab + text after caret
+            // this.body = this.body.substring(0, start) + "\t" + this.body.substring(end);
+        
+            // // put caret at right position again
+            // this.selectionStart = this.selectionEnd = start + 1;
+        }
     }
 
     handleAuthTypeChange(e){
@@ -72,29 +106,55 @@ export default class Postmanoptions extends LightningElement {
             'username' : this.uname,
             'password' : this.pwd
         }
-        this.emit('authchange', this.auth);
+        this.dispatchEvent(new CustomEvent('authchange',{
+            detail:{
+                'authchange' : this.auth
+            }
+        }));
+        //this.emit('authchange', this.auth);
     }
 
     handleDataTableUpdate(e){
         console.log('Inside handleDataTableUpdate' + e.detail.headers);
         this.headers = e.detail.headers;
-        this.emit('headerschange', this.headers);
+        this.dispatchEvent(new CustomEvent('headerschange',{
+            detail:{
+                'headerschange' : this.headers
+            }
+        }));
+        //this.emit('headerschange', this.headers);
     }
 
     handleRequestBodyUpdate(e){
         console.log('Inside handleRequestBodyUpdate' + e.target.value);
-        this.body = e.target.value;
-        this.emit('bodychange', this.body);
+        let body = e.target.value.replace('\n', '');
+        try{
+            this.body = JSON.parse(body);
+            console.log('After serialization: ' + JSON.stringify(this.body));
+            this.error = '';
+        }
+        catch(error){
+            console.log('error->' + error);
+            this.error = ERROR_INVALID_JSON_BODY;
+        }
+        this.dispatchEvent(new CustomEvent('bodychange',{
+            detail:{
+                'bodychange' : this.body
+            }
+        }));
+        //this.emit('bodychange', this.body);
     }
 
-    emit(eventtype, value){
-        const custom_event = new CustomEvent(eventtype,{
-            detail:{
-                eventtype : value
-            }
-        });
-        this.dispatchEvent(custom_event);
-    }
+    // NOT being used for now since LWC can not use event name dynamically
+    // emit(eventtype, value){
+    //     const custom_event = new CustomEvent(eventtype,{
+    //         detail:{
+    //             eventtype : value
+    //         }
+    //     });
+    //     console.log('Event detail ->' +JSON.stringify(e.detail));
+    //     this.dispatchEvent(custom_event);
+    // }
     
     handleTabClick(e){
         this.showAuth = false;
@@ -108,10 +168,11 @@ export default class Postmanoptions extends LightningElement {
         const tabs = this.template.querySelectorAll('.tab > .tablinks');
         //console.log('tabs->' + tabs.length);
         for(let tab of tabs){
-            //console.log('ALL TABS');
-            //console.log('HERE->' + tab.getAttribute('name'));
             if(tab.getAttribute('name') == tabName){
-                tab.classList.add('active');
+                if(this.method == 'GET' && tabName == 'Body') 
+                    alert('Body is not applicable for GET requests');
+                else 
+                    tab.classList.add('active');
             }
             else{
                 tab.classList.remove('active');
@@ -127,7 +188,9 @@ export default class Postmanoptions extends LightningElement {
                 this.showHeaders = true;
                 break;
             case 'Body':
-                if(this.method != 'GET') this.showBody = true;
+                if(this.method != 'GET'){
+                    this.showBody = true;
+                }
                 break;
             case 'Raw':
                 this.showRaw = true;
