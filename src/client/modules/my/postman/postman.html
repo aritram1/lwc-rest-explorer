@@ -18,7 +18,9 @@
             </div>
             
             <div class="center">
-                <my-postmanoptions method={method} 
+                <my-postmanoptions 
+                    method={method} 
+                    endpoint = {endpoint.value}
                     onauthchange = {handleAuthChange}
                     onheaderschange = {handleHeadersChange}
                     onbodychange = {handleBodyChange}>

@@ -49,7 +49,7 @@
             "src/**/*.spec.js",
             "src/**/*.test.js"
         ],
-        "exec": "node ./src/server/api.js"
+        "exec": "node ./scripts/server.js"
     },
     "repository": "aritram1/my-app",
     "scripts": {

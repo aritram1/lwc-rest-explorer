@@ -6,7 +6,7 @@ const DEFAULT_RESPONSE = 'Response will appear here';
 
 export default class Postman extends LightningElement {
 
-    endpoint = 'https://dog.ceo/api/breeds/image/random';//'http://0.0.0.0:3002'; //''https://jsonplaceholder.typicode.com/posts/';
+    endpoint = 'http://0.0.0.0:3002';//'https://dog.ceo/api/breeds/image/random';//'http://0.0.0.0:3002'; //''https://jsonplaceholder.typicode.com/posts/';
     itemstyle = "background-color: rgba(5, 122, 218, 0)";
     alpha;
     @track history;
@@ -22,7 +22,7 @@ export default class Postman extends LightningElement {
         this.history = [];
         this.response = DEFAULT_RESPONSE;
         this.timetaken = '00';
-        this.method = 'POST';
+        this.method = 'GET';
         this.alpha = 0;
     }
 

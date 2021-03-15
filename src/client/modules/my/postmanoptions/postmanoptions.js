@@ -20,11 +20,14 @@ export default class Postmanoptions extends LightningElement {
 
     @track headers;
     @track body;
-    @track request;
+
+    @api method;
+    @api endpoint;
+
     get raw(){
         console.log('I am first getter');
+        let raw_text = this.method + ' ' + this.endpoint + '\n' + 'HTTP 1.1';
         let raw_request = Object.assign({}, this.auth, this.headers, JSON.parse(this.body));
-        let raw_text = '';
         if (raw_request){
             for(let prop in raw_request){
                 raw_text = raw_text + '\n' + prop + ' - ' + raw_request[prop];
@@ -35,8 +38,6 @@ export default class Postmanoptions extends LightningElement {
         }
         return raw_text;
     }
-
-    @api method;
 
     constructor(){
         super();
