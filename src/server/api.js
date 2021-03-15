@@ -8,7 +8,7 @@ const app = express();
 app.use(helmet());
 app.use(compression());
 
-const DIST_DIR = './dist';
+const DIST_DIR = '../dist';
 
 const host = 'localhost';
 const defaultPort = 3000;
@@ -21,8 +21,9 @@ app.use(express.static(DIST_DIR));
 
 //app.use('*', (req, res) => {
 app.use('/fe/postman', (req, res) => {
-    // res.sendFile(path.resolve(DIST_DIR, 'index.html'));
-    res.sendFile(path.resolve('index.html'));
+    console.log(path.join('*'));
+    res.sendFile(path.resolve(DIST_DIR, 'index.html'));
+    //res.sendFile(path.resolve('index.html'));
 });
 /////////////////////////////////////////////////////////////////////////////////
 

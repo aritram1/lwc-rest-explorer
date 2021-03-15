@@ -38,6 +38,10 @@ app.get('/', (req, res) => {
     res.json('Visit /fe/... (for frontend) and /be/... for backend server');
 });
 
+app.post('/be/testpost', (req, res) => {
+    res.json(`You are inside test post. Some request parmas are : ${req.params}. Done!`);
+});
+
 app.listen(PORT, () =>
     console.log(
         `✅  Both API and FrontEnd Server started: http://${HOST}:${PORT}`
