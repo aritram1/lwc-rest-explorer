@@ -99,14 +99,15 @@
     /* height: 15%; */
 }
 
-.tooltiptext{
+.tooltip{
     display: none;
     position: absolute;
     height: auto;
     width: auto;
     z-index: 1;
-    background-color: #39cdd8;
+    background-color: rgba(5, 122, 218, 1);
     color: black;
     border-radius: 4px;
     padding: 4px;
+    border: 1px solid;
 }

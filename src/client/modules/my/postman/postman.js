@@ -1,5 +1,5 @@
-import { LightningElement, track, api } from 'lwc';
-const DEFAULT_GRADIENT_CHANGE = 0.09;
+import { LightningElement, track } from 'lwc';
+const DEFAULT_GRADIENT_CHANGE = 0.05;
 const DEFAULT_STYLE = "background-color: rgba(5, 122, 218, ";
 const DEFAULT_ERROR_STYLE = "background-color: rgba(255, 0, 0, ";
 const DEFAULT_RESPONSE = 'Response will appear here';
@@ -28,10 +28,13 @@ export default class Postman extends LightningElement {
     }
 
     handleHoverIn(e){
-        this.showtooltip = true;
+        let targetStyle = e.target.style;
+        e.target.nextSibling.style.backgroundColor = targetStyle.backgroundColor;
+        e.target.nextSibling.style.color = targetStyle.color;
+        e.target.nextSibling.style.display = 'block';
     }
     handleHoverOut(e){
-        this.showtooltip = false;
+        e.target.nextSibling.style.display = 'none';
     }
 
     handleClick(event){
@@ -73,6 +76,13 @@ export default class Postman extends LightningElement {
         console.log('++++++++++++++++++');
         console.log(JSON.stringify(options));
         console.log('++++++++++++++++++');
+        let today = new Date();
+        let currentItem = {
+            id: Math.random(1),
+            ep: this.endpoint,
+            value: this.endpoint.length < 30 ? this.endpoint : this.endpoint.substr(0,30) + '....',
+            timestamp: `${today.getDate()} ${today.getHours()} ${today.getMinutes()} ${today.getSeconds()}`
+        };
         fetch(this.endpoint, {
             method: this.method,
             headers : options.headers,
@@ -85,48 +95,47 @@ export default class Postman extends LightningElement {
         })
         .then(data=>{
             console.log(data);
-            //this.response = JSON.stringify(data);
             this.response = this.process(data);
-            
-            this.timetaken = Date.now() - start_time;
-            
-            this.history.unshift({
-                id: Math.random(1),
-                ep: this.endpoint,
-                value: this.endpoint.length < 30 ? this.endpoint : this.endpoint.substr(0,30) + '....',
-                success: true,
-                responsetime: Date.now() - start_time,
-                style : this.getStyle(this.itemstyle,true)
-            });
-
+            currentItem.success = true;
         })
         .catch(error=>{
             console.log(`Error happened inside resp block ${error}`);
             this.response = `Error occurred with status : ${error}`;
-            this.history.unshift({
-                id: Math.random(1),
-                ep: this.endpoint,
-                value: this.endpoint.length < 30 ? this.endpoint : this.endpoint.substr(0,30) + '....',
-                success: false,
-                responsetime: Date.now() - start_time,
-                style : this.getStyle(this.itemstyle, false)
-            });
-            this.timetaken = Date.now() - start_time;
+            currentItem.success = false;
         });
+        this.timetaken = Date.now() - start_time;
+        this.history.unshift(currentItem);
+        this.history = this.processAndstylise(this.history);
     }
-    
-    getStyle(currentstyle, success){
-        //console.log('as received : ' + this.itemstyle);
-        let start = currentstyle.lastIndexOf(',') + 1;
-        let end = currentstyle.indexOf(')') - 2;
-        let alpha = parseFloat(currentstyle.substr(start, end));
-        //console.log('alpha->'+alpha);
-        this.alpha = (alpha + DEFAULT_GRADIENT_CHANGE).toFixed(2);
+    processAndstylise(hist){
+        //let newhistory = [];
+        let expectedGradientChange = this.history.length === 0 ? 0.1 : 1/this.history.length;
+        this.alpha = parseFloat((this.alpha + expectedGradientChange)).toFixed(2);
         if(this.alpha > 1) this.alpha = 1;
-        this.itemstyle = success ? DEFAULT_STYLE + this.alpha + ")" : DEFAULT_ERROR_STYLE + this.alpha + ")";
-        //console.log('as sent back : ' + this.itemstyle);
-        return this.itemstyle;
+        for (let h of hist){
+            h.style = h.success ? DEFAULT_STYLE + this.alpha + ")" : DEFAULT_ERROR_STYLE + this.alpha + ")";
+        }
+        return hist;
     }
+    // getStyle(currentstyle, success){
+    //     console.log('as received : ' + this.itemstyle);
+    //     let start = currentstyle.lastIndexOf(',') + 1;
+    //     let end = currentstyle.indexOf(')') - 2;
+    //     let alpha = parseFloat(currentstyle.substr(start, end));
+    //     //console.log('alpha->'+alpha);
+    //     if(this.history.length === 0){
+    //         this.alpha = (alpha + DEFAULT_GRADIENT_CHANGE).toFixed(2);
+    //     }
+    //     else{
+    //         let expectedGradientChange = (1 - this.alpha)/this.history.length;
+    //         if(expectedGradientChange > DEFAULT_GRADIENT_CHANGE) expectedGradientChange = DEFAULT_GRADIENT_CHANGE;
+    //         this.alpha = (alpha + expectedGradientChange).toFixed(2);
+    //     }
+    //     if(this.alpha > 1) this.alpha = 1;
+    //     this.itemstyle = success ? DEFAULT_STYLE + this.alpha + ")" : DEFAULT_ERROR_STYLE + this.alpha + ")";
+    //     console.log('as sent back : ' + this.itemstyle);
+    //     return this.itemstyle;
+    // }
 
     handleChange(event){
         console.log(`Value input as : ${event.target.value}`);
