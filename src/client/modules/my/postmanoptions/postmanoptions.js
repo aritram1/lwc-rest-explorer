@@ -1,5 +1,5 @@
 import { LightningElement, track, api } from 'lwc';
-const DEFAULT_REQUEST_BODY = '{\n    "Key" : "Value"\n}';
+const DEFAULT_REQUEST_BODY = '{\n    "Id" : "10112"\n}'; //'{\n    "Key" : "Value"\n}'; //TESTING
 const DEFAULT_REQUEST_RAW = 'some specific raw';
 const ERROR_INVALID_JSON_BODY = 'The json is not well formed. Please check. Key-Value pairs must be enclosed with double quotes only.';
 export default class Postmanoptions extends LightningElement {
@@ -10,6 +10,7 @@ export default class Postmanoptions extends LightningElement {
     @track showRaw;
     
     @track auth;
+    @track authType;
     @track showBasicAuth;
     @track showOAuth2;
     @track error;
@@ -17,6 +18,10 @@ export default class Postmanoptions extends LightningElement {
 
     @track uname;
     @track pwd;
+
+    @track cId='';
+    @track cCode='';
+    @track cbUrl='';
 
     @track headers;
     @track body;
@@ -26,11 +31,13 @@ export default class Postmanoptions extends LightningElement {
 
     get raw(){
         console.log('I am first getter');
-        let raw_text = this.method + ' ' + this.endpoint + '\n' + 'HTTP 1.1';
+        let raw_text = this.method + ' ' + this.endpoint + '\n HTTP 1.1';
         let raw_request = Object.assign({}, this.auth, this.headers, JSON.parse(this.body));
         if (raw_request){
             for(let prop in raw_request){
-                raw_text = raw_text + '\n' + prop + ' - ' + raw_request[prop];
+                if (Object.prototype.hasOwnProperty.call(raw_request, prop)) {
+                    raw_text = raw_text + '\n' + prop + ' - ' + raw_request[prop];
+                }
             }
         }
         else{
@@ -49,14 +56,14 @@ export default class Postmanoptions extends LightningElement {
     }
 
     handleTabMovement(e){
-        if (e.key == 'Tab') {
+        if (e.key === 'Tab') {
             e.preventDefault();
             let tArea = this.template.querySelector('textarea');
-            var start = tArea.selectionStart;
-            var end = tArea.selectionEnd;
+            let start = tArea.selectionStart;
+            let end = tArea.selectionEnd;
             console.log('start->' + start, + '  ' + 'end-> ' + end);
 
-            // set textarea value to: text before caret + tab + text after caret
+            // set textarea value to: text before caret + tab (i.e. 4 spaces, see below) + text after caret
             tArea.value = tArea.value.substring(0, start) + "    " + tArea.value.substring(end);
         
             // put caret at right position again
@@ -66,8 +73,8 @@ export default class Postmanoptions extends LightningElement {
 
     handleAuthTypeChange(e){
         console.log('handleAuthTypeChange->' + e.target.value)
-        this.auth = e.target.value;
-        switch(this.auth){
+        this.authType = e.target.value;
+        switch(this.authType){
             case 'NOAUTH':
                 this.showBasicAuth = false;
                 this.showOAuth2 = false;
@@ -80,24 +87,46 @@ export default class Postmanoptions extends LightningElement {
                 this.showBasicAuth = false;
                 this.showOAuth2 = true;
                 break;
+            default:
+                this.error = 'Auth must be one of the 3 available options';
+                break;
         }
     }
 
     updateAuth(e){
-        //let inputs = this.template.querySelectorAll(".authdetails input[type='text']");
-        this.uname = this.template.querySelector(".authdetails input[name='uname']").value;
-        this.pwd = this.template.querySelector(".authdetails input[name='pwd']").value;
-        console.log(`the username is ${this.uname} and password is ${this.pwd}`);
-        this.auth = {
-            'username' : this.uname,
-            'password' : this.pwd
+        switch(this.authType){
+            case 'BASIC':
+                this.uname = this.template.querySelector(".authdetails input[name='uname']").value;
+                this.pwd = this.template.querySelector(".authdetails input[name='pwd']").value;
+                console.log(`the username is ${this.uname} and password is ${this.pwd}`);
+                this.auth = Object.assign({},{
+                    'uname' : this.uname,
+                    'pwd' : this.pwd,
+                    'type' : this.authType
+                });
+                break;
+            case 'OAUTH2':
+                this.cId = this.template.querySelector(".authdetails input[name='cId']").value;
+                this.cCode = this.template.querySelector(".authdetails input[name='cCode']").value;
+                console.log(`the client ID is ${this.cId} and client Code is ${this.cCode}`);
+                this.auth = Object.assign({},{
+                    'cId' : this.cId,
+                    'cCode' : this.cCode,
+                    'type' : this.authType
+                });
+                break;
+            default:
+                this.error = 'INSIDE updateAuth() : Auth must be one of the 3 available options';;
+                break;
         }
+        
+        
         this.dispatchEvent(new CustomEvent('authchange',{
             detail:{
                 'authchange' : this.auth
             }
         }));
-        //this.emit('authchange', this.auth);
+        //this.emit('authchange', this.auth); //Can be included when LWC can support dynamic event names
     }
 
     handleDataTableUpdate(e){
@@ -108,7 +137,7 @@ export default class Postmanoptions extends LightningElement {
                 'headerschange' : this.headers
             }
         }));
-        //this.emit('headerschange', this.headers);
+        //this.emit('headerschange', this.headers); //Can be included when LWC can support dynamic event names
     }
 
     handleRequestBodyUpdate(e){
@@ -129,7 +158,7 @@ export default class Postmanoptions extends LightningElement {
             console.log('error->' + error);
             this.error = ERROR_INVALID_JSON_BODY;
         }
-        //this.emit('bodychange', this.body);
+        //this.emit('bodychange', this.body); //Can be included when LWC can support dynamic event names
     }
 
     // NOT being used for now since LWC can not use event name dynamically
@@ -155,8 +184,8 @@ export default class Postmanoptions extends LightningElement {
         const tabs = this.template.querySelectorAll('.tab > .tablinks');
         //console.log('tabs->' + tabs.length);
         for(let tab of tabs){
-            if(tab.getAttribute('name') == tabName){
-                if(this.method == 'GET' && tabName == 'Body') 
+            if(tab.getAttribute('name') === tabName){
+                if(this.method === 'GET' && tabName === 'Body') 
                     alert('Body is not applicable for GET requests');
                 else 
                     tab.classList.add('active');
@@ -174,7 +203,7 @@ export default class Postmanoptions extends LightningElement {
                 this.showHeaders = true;
                 break;
             case 'Body':
-                if(this.method != 'GET'){
+                if(this.method !== 'GET'){
                     this.showBody = true;
                 }
                 //this.body = JSON.parse(JSON.stringify(this.body));
@@ -182,16 +211,9 @@ export default class Postmanoptions extends LightningElement {
             case 'Raw':
                 this.showRaw = true;
                 break;
+            default:
+                this.error = 'Tab must be one of the 4 available options';
+                break;
         }
     }
 }
-
-
-// tabClick(e){
-    //     const allTabs = document.querySelectorAll('ul>li');
-    //     allTabs.forEach( (elm, idx) =>{
-    //         console.log(elm);
-    //         elm.classList.remove("slds-is-active")
-    //     })
-    //     e.currentTarget.classList.add('slds-is-active')
-    // }
