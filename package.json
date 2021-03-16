@@ -42,14 +42,17 @@
     },
     "nodemonConfig": {
         "watch": [
-            "src/server/**/*.js"
+            "./scripts/*.js",
+            "./src/*.html",
+            "./src/*.js",
+            "./src/*.css"
         ],
         "ext": "js",
         "ignore": [
             "src/**/*.spec.js",
             "src/**/*.test.js"
         ],
-        "exec": "node ./src/server/api.js"
+        "exec": "node ./scripts/server.js"
     },
     "repository": "aritram1/my-app",
     "scripts": {

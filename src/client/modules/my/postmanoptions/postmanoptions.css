@@ -3,6 +3,7 @@
     overflow: hidden;
     border: 1px solid #ccc;
     background-color: #f1f1f1;
+    border-radius: 4px;
   }
   
   /* Style the buttons that are used to open the tab content */
@@ -26,12 +27,10 @@
     background-color: #ccc;
   }
   
-  /* Style the tab content */
-  .tabContent {
-    /* padding: 6px 6px; */
-    
-    /* border-top: none; */
-  }
+  /* .tabContent {
+    padding: 6px 6px;
+    border-top: none;
+  } */
   
   .authchoices{
     padding : 1%;
@@ -43,9 +42,17 @@
 
   .authdetails{
     display: grid;
-    grid-template-columns: 2fr 7fr;
     padding : 1%;
+    border: 1px solid #ccc;
+  }
 
+  .authbasic{
+    grid-template-columns: 2fr 8fr;
+    
+  }
+  .autho2{
+    grid-auto-flow: column;
+    /* grid-template-columns: 2fr 8fr; */
   }
 
   .body{
@@ -62,11 +69,23 @@
   }
   
   .raw{
-    padding-top: 40px;
-    background-color:rgba(5,122,218,.25);
+    /* padding-top: 4px; */
+    background-color:#a1cbec40;
     border-radius: 4px;
+    text-align: top;
+    font-family: Helvetica, sans-serif;
+    font-size: 90%;
+    white-space: pre-wrap;
+    border: 1px solid #ccc;
+    padding: 14px 16px;
+    padding-top: 0px;
   }
 
   .input{
     padding : 1%;
+  }
+
+  .error{
+    padding-bottom: 4px;
+    color: #bd3b3b;
   }

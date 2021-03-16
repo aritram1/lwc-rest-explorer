@@ -5,7 +5,7 @@
                 <img src="../../../resources/lwc.png"/>
                 <div class="appname">Postman Clone</div>
                 <div class="time">{timetaken} ms </div>
-            </div>
+            </div> 
             <div class="top">
                 <select name="methods" id="methods" onclick={handleRequestTypeChange}>
                     <option value="GET">GET</option>
@@ -18,7 +18,9 @@
             </div>
             
             <div class="center">
-                <my-postmanoptions method={method} 
+                <my-postmanoptions 
+                    method={method} 
+                    endpoint = {endpoint.value}
                     onauthchange = {handleAuthChange}
                     onheaderschange = {handleHeadersChange}
                     onbodychange = {handleBodyChange}>

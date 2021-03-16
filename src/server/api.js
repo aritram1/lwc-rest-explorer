@@ -1,32 +1,46 @@
-// Simple Express server setup to serve for local testing/dev API server
-const compression = require('compression');
-const helmet = require('helmet');
-const express = require('express');
+// // Simple Express server setup to serve for local testing/dev API server
+// const compression = require('compression');
+// const helmet = require('helmet');
+// const express = require('express');
+// const path = require('path');
 
-const app = express();
-app.use(helmet());
-app.use(compression());
+// const app = express();
+// app.use(helmet());
+// app.use(compression());
 
-const HOST = process.env.API_HOST || 'localhost';
-const PORT = process.env.API_PORT || 3002;
+// const DIST_DIR = '../dist';
 
-app.get('/', (req, res) => {
-    res.json({
-        'msg': 'test message'
-    });
-});
+// const host = 'localhost';
+// const defaultPort = 3000;
 
-app.use(function (req, res, next) {
-    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3002');
-    next();
-});
+// const HOST = process.env.API_HOST || host;
+// const PORT = process.env.API_PORT || defaultPort;
 
-app.get('/api/v1/endpoint', (req, res) => {
-    res.json({ success: true });
-});
+// ////////////////////////////Front end server/////////////////////////////////////
+// app.use(express.static(DIST_DIR));
 
-app.listen(PORT, () =>
-    console.log(
-        `✅  API Server started: http://${HOST}:${PORT}/api/v1/endpoint`
-    )
-);
+// //app.use('*', (req, res) => {
+// app.use('/fe/postman', (req, res) => {
+//     console.log(path.join('*'));
+//     res.sendFile(path.resolve(DIST_DIR, 'index.html'));
+//     //res.sendFile(path.resolve('index.html'));
+// });
+// /////////////////////////////////////////////////////////////////////////////////
+
+// // CORS middleware
+// app.use(function (req, res, next) {
+//     res.append('Access-Control-Allow-Origin', `http:\\${host}:${defaultPort}`);
+//     res.append('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+//     res.append('Access-Control-Allow-Headers', 'Content-Type');
+//     next();
+// });
+
+// app.get('/', (req, res) => {
+//     res.json('Visit /fe/... (for frontend) and /be/... for backend server');
+// });
+
+// app.listen(PORT, () =>
+//     console.log(
+//         `✅  Both API and FrontEnd Server started: http://${HOST}:${PORT}`
+//     )
+// );
