@@ -98,3 +98,15 @@
     border: 1px solid black;
     /* height: 15%; */
 }
+
+.tooltiptext{
+    display: none;
+    position: absolute;
+    height: auto;
+    width: auto;
+    z-index: 1;
+    background-color: #39cdd8;
+    color: black;
+    border-radius: 4px;
+    padding: 4px;
+}

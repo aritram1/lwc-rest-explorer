@@ -16,6 +16,7 @@ export default class Postman extends LightningElement {
     @track body;
     @track headers;
     @track auth;
+    @track showtooltip;
     
     constructor(){
         super();
@@ -26,6 +27,13 @@ export default class Postman extends LightningElement {
         this.alpha = 0;
     }
 
+    handleHoverIn(e){
+        this.showtooltip = true;
+    }
+    handleHoverOut(e){
+        this.showtooltip = false;
+    }
+
     handleClick(event){
         console.log('Auth received as : ' + JSON.stringify(this.auth));
         console.log('Body received as : ' + JSON.stringify(this.body));
@@ -33,7 +41,7 @@ export default class Postman extends LightningElement {
         let options = {};
 
         if(this.auth){
-            console.log('this.auth is received here ' + JSON.stringify(this.auth));
+            console.log('this.auth is received NOT NULL => ' + JSON.stringify(this.auth));
             if(this.auth.type === 'BASIC'){
                 let {uname, pwd} = this.auth;
                 options.uname = uname;
@@ -48,7 +56,7 @@ export default class Postman extends LightningElement {
             }
         }
         if(this.headers){
-            console.log('this.headers is NOT NULL => ' + JSON.stringify(this.headers));
+            console.log('this.headers is received NOT NULL => ' + JSON.stringify(this.headers));
             for(let p of this.headers){
                 console.log(`Property -> ${p} AND Value -> ${this.headers[p]}`);
             }
@@ -87,6 +95,7 @@ export default class Postman extends LightningElement {
                 ep: this.endpoint,
                 value: this.endpoint.length < 30 ? this.endpoint : this.endpoint.substr(0,30) + '....',
                 success: true,
+                responsetime: Date.now() - start_time,
                 style : this.getStyle(this.itemstyle,true)
             });
 
@@ -99,6 +108,7 @@ export default class Postman extends LightningElement {
                 ep: this.endpoint,
                 value: this.endpoint.length < 30 ? this.endpoint : this.endpoint.substr(0,30) + '....',
                 success: false,
+                responsetime: Date.now() - start_time,
                 style : this.getStyle(this.itemstyle, false)
             });
             this.timetaken = Date.now() - start_time;
