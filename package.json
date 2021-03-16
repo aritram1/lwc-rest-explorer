@@ -42,7 +42,10 @@
     },
     "nodemonConfig": {
         "watch": [
-            "./scripts/*.js"
+            "./scripts/*.js",
+            "./src/*.html",
+            "./src/*.js",
+            "./src/*.css"
         ],
         "ext": "js",
         "ignore": [

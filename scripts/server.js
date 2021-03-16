@@ -36,7 +36,7 @@ app.use(function (req, res, next) {
     res.append('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
     res.append('Access-Control-Allow-Headers', 'Content-Type');
     next();
-});
+}); 
 
 let createResponse = function(path){
     let time = new Date();
@@ -46,17 +46,39 @@ let createResponse = function(path){
     };
 }
 
+let handlePost = function(req){
+    let data = {
+        'headers' : req.headers,
+        'body' : req.body,
+        'query' : req.query
+    };
+    return data;
+}
 
-app.get('/', (req, res) => {
-    console.log(`You are inside main get request. Welcome! Some request params are : ${JSON.stringify(req.params)}. Done!`);
-    let data = createResponse('/');
-    res.json(data);
+app.use('/post', (req, res)=>{
+    let response = {
+        method : req.method
+    };
+    switch(req.method){
+        case 'GET':
+            console.log(new Date() + ' Inside GET');
+            break;
+        case 'POST':
+            console.log(new Date() + 'Inside POST');
+            console.log('-->' + handlePost(req));
+            response.data = handlePost(req);
+            break;
+        default:
+            console.log('Inside DEFAULT');
+            break;
+    }
+    res.send(response);
 });
 
-app.post('/post', (req, res) => {
-    console.log(`You are inside test post. Some request params are : ${JSON.stringify(req.params)}. Done!`);
-    let data = createResponse('/post');
-    res.json(JSON.stringify(req.params));
+app.get('/', (req, res) => {
+    //  console.log(`You are inside main get request. Welcome! Some request params are : ${JSON.stringify(req.params)}. Done!`);
+    let data = createResponse('/');
+    res.json(data);
 });
 
 app.listen(PORT, () =>

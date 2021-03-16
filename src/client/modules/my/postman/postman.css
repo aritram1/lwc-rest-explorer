@@ -1,17 +1,19 @@
 *{
     padding: 2px;
     margin :2px;
-    /* border: 1px solid  rgba(5, 122, 218, 0.3); */    
+    /* border: 1px solid  rgba(5, 122, 218, 0.3); */  /* debugging */  
 }
 .postman{
     background-color: aliceblue;
     border: 2px solid black;
     border-radius: 5px;
 }
+
 .container{
     padding: 4%;
     border: 10px solid white;
 }
+
 .top{
     display: grid;
     grid-template-columns: 1fr 10fr 1fr;
@@ -19,6 +21,7 @@
 
 .top--input{
     color: black;
+    font-family: monospace;
 }
 
 .container--button{
@@ -30,9 +33,9 @@
     color: black;
 }
 
-center{
+/* center{
 
-}
+} */
 
 .bottom{
     background-color:white;
@@ -42,30 +45,22 @@ center{
     /* border: 1px solid  rgba(5, 122, 218, 0.3);     */
 
 }
+
 .history{
     margin: 3px;
     border-radius: 2px;
     background-color: rgba(5, 122, 218, 0.3);
     color: white;
+    font-family: monospace;
 }
+
 .history--item{
     list-style-type: none;
-    /* color: black; */
 }
-/* .history--item:nth-of-type(odd){
-    background-color: rgb(5, 122, 218);
-}
-.history--item:nth-of-type(even){
-    background-color: rgb(85, 122, 218);
-} */
-    
-/* .history--item__disabled{
-    color: #ad4343;
-} */
-.response{
-    /* background-color: teal; */
-    border: 1px solid  rgba(5, 122, 218, 0.3);    
 
+.response{
+    border: 1px solid  rgba(5, 122, 218, 0.3);    
+    font-family: monospace;
     background-color: white;
     background-image: linear-gradient(to left #385be9e5, #505875e5);
     border-radius: 2px;
@@ -74,8 +69,10 @@ center{
     text-align: left; 
     color: black;
     white-space: pre-wrap;
-    /* white-space: pre-line; 
-    pre-line will remove the spaces */
+    /* 
+    white-space: pre-line;
+    in constrast to white-spaces, pre-line removes the spaces
+    */
 }
 
 .header{
@@ -92,10 +89,12 @@ center{
     padding-top: 15px;
     text-align: center;
 }
+
 .time{
     background-color: antiquewhite;
     text-align: center;
-    padding: 24px;
+    padding: 23px;
     border-radius: 10px;
     border: 1px solid black;
+    /* height: 15%; */
 }
