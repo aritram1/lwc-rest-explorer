@@ -1,5 +1,5 @@
-import { LightningElement, track, api } from 'lwc';
-const DEFAULT_GRADIENT_CHANGE = 0.09;
+import { LightningElement, track } from 'lwc';
+const DEFAULT_GRADIENT_CHANGE = 0.05;
 const DEFAULT_STYLE = "background-color: rgba(5, 122, 218, ";
 const DEFAULT_ERROR_STYLE = "background-color: rgba(255, 0, 0, ";
 const DEFAULT_RESPONSE = 'Response will appear here';
@@ -16,6 +16,7 @@ export default class Postman extends LightningElement {
     @track body;
     @track headers;
     @track auth;
+    @track showtooltip;
     
     constructor(){
         super();
@@ -26,6 +27,16 @@ export default class Postman extends LightningElement {
         this.alpha = 0;
     }
 
+    handleHoverIn(e){
+        //e.target.nextSibling.style.backgroundColor = e.target.style.backgroundColor;
+        e.target.nextSibling.style.color = e.target.style.color;
+        e.target.nextSibling.style.display = 'block';
+    }
+
+    handleHoverOut(e){
+        e.target.nextSibling.style.display = 'none';
+    }
+
     handleClick(event){
         console.log('Auth received as : ' + JSON.stringify(this.auth));
         console.log('Body received as : ' + JSON.stringify(this.body));
@@ -33,7 +44,7 @@ export default class Postman extends LightningElement {
         let options = {};
 
         if(this.auth){
-            console.log('this.auth is received here ' + JSON.stringify(this.auth));
+            console.log('this.auth is received NOT NULL => ' + JSON.stringify(this.auth));
             if(this.auth.type === 'BASIC'){
                 let {uname, pwd} = this.auth;
                 options.uname = uname;
@@ -48,7 +59,7 @@ export default class Postman extends LightningElement {
             }
         }
         if(this.headers){
-            console.log('this.headers is NOT NULL => ' + JSON.stringify(this.headers));
+            console.log('this.headers is received NOT NULL => ' + JSON.stringify(this.headers));
             for(let p of this.headers){
                 console.log(`Property -> ${p} AND Value -> ${this.headers[p]}`);
             }
@@ -62,61 +73,79 @@ export default class Postman extends LightningElement {
         console.log(`Endpoint is : ${this.endpoint}`);
         let start_time = Date.now();
         options.method = this.method;
-        console.log('++++++++++++++++++');
-        console.log(JSON.stringify(options));
-        console.log('++++++++++++++++++');
+        // console.log('++++++++++++++++++');
+        // console.log(JSON.stringify(options));
+        // console.log('++++++++++++++++++');
+        let today = new Date();
+        let amORpm = today.getHours() >=0 && today.getHours() <=11 ? 'AM' : 'PM';
+        let currentItem = {
+            id: Math.random(1),
+            ep: this.endpoint,
+            value: this.endpoint.length < 30 ? this.endpoint : this.endpoint.substr(0,30) + '....',
+            timestamp: `${today.getDate()}/${today.getMonth()}/${today.getFullYear()} ${today.getHours()}:${today.getMinutes()}:${today.getSeconds()} ${amORpm}`
+        };
         fetch(this.endpoint, {
             method: this.method,
             headers : options.headers,
             body : JSON.stringify(options.body)
         })
         .then(resp =>{
+            currentItem.status = resp.status;
             console.log(resp.status);
             if(resp.status !== 200) throw new Error(resp.status);
             return resp.json();
         })
         .then(data=>{
-            console.log(data);
-            //this.response = JSON.stringify(data);
-            this.response = this.process(data);
-            
             this.timetaken = Date.now() - start_time;
-            
-            this.history.unshift({
-                id: Math.random(1),
-                ep: this.endpoint,
-                value: this.endpoint.length < 30 ? this.endpoint : this.endpoint.substr(0,30) + '....',
-                success: true,
-                style : this.getStyle(this.itemstyle,true)
-            });
-
+            console.log(data);
+            this.response = this.process(data);
+            currentItem.success = true;
+            currentItem.responsetime = this.timetaken;
+            this.history.unshift(currentItem);
+            this.history = this.processAndstylise(this.history);
         })
         .catch(error=>{
+            this.timetaken = Date.now() - start_time;
+            currentItem.responsetime = this.timetaken;
             console.log(`Error happened inside resp block ${error}`);
             this.response = `Error occurred with status : ${error}`;
-            this.history.unshift({
-                id: Math.random(1),
-                ep: this.endpoint,
-                value: this.endpoint.length < 30 ? this.endpoint : this.endpoint.substr(0,30) + '....',
-                success: false,
-                style : this.getStyle(this.itemstyle, false)
-            });
-            this.timetaken = Date.now() - start_time;
+            currentItem.success = false;
+            this.history.unshift(currentItem);
+            this.history = this.processAndstylise(this.history);
         });
     }
-    
-    getStyle(currentstyle, success){
-        //console.log('as received : ' + this.itemstyle);
-        let start = currentstyle.lastIndexOf(',') + 1;
-        let end = currentstyle.indexOf(')') - 2;
-        let alpha = parseFloat(currentstyle.substr(start, end));
-        //console.log('alpha->'+alpha);
-        this.alpha = (alpha + DEFAULT_GRADIENT_CHANGE).toFixed(2);
-        if(this.alpha > 1) this.alpha = 1;
-        this.itemstyle = success ? DEFAULT_STYLE + this.alpha + ")" : DEFAULT_ERROR_STYLE + this.alpha + ")";
-        //console.log('as sent back : ' + this.itemstyle);
-        return this.itemstyle;
+    processAndstylise(hist){
+        let expectedGradientChange = (this.history.length === 0 ? 0.1 : 1/this.history.length).toFixed(2);
+        //console.log('--expectedGradientChange--' + expectedGradientChange);
+        for(let i=0; i<this.history.length; i++){
+            let h = this.history[i];
+            let alpha = (1-i*expectedGradientChange).toFixed(2);
+            if(alpha > 0.9) alpha = 0.9;
+            if(alpha < 0.1) alpha = 0.1;
+            //console.log('--.alpha--' + alpha);
+            h.style = h.success ? DEFAULT_STYLE + alpha + ")" : DEFAULT_ERROR_STYLE + alpha + ")";
+        }
+        return hist;
     }
+    // getStyle(currentstyle, success){
+    //     console.log('as received : ' + this.itemstyle);
+    //     let start = currentstyle.lastIndexOf(',') + 1;
+    //     let end = currentstyle.indexOf(')') - 2;
+    //     let alpha = parseFloat(currentstyle.substr(start, end));
+    //     //console.log('alpha->'+alpha);
+    //     if(this.history.length === 0){
+    //         this.alpha = (alpha + DEFAULT_GRADIENT_CHANGE).toFixed(2);
+    //     }
+    //     else{
+    //         let expectedGradientChange = (1 - this.alpha)/this.history.length;
+    //         if(expectedGradientChange > DEFAULT_GRADIENT_CHANGE) expectedGradientChange = DEFAULT_GRADIENT_CHANGE;
+    //         this.alpha = (alpha + expectedGradientChange).toFixed(2);
+    //     }
+    //     if(this.alpha > 1) this.alpha = 1;
+    //     this.itemstyle = success ? DEFAULT_STYLE + this.alpha + ")" : DEFAULT_ERROR_STYLE + this.alpha + ")";
+    //     console.log('as sent back : ' + this.itemstyle);
+    //     return this.itemstyle;
+    // }
 
     handleChange(event){
         console.log(`Value input as : ${event.target.value}`);
@@ -135,7 +164,7 @@ export default class Postman extends LightningElement {
     }
 
     process(data){
-        console.log(JSON.stringify(data, undefined, 4));
+        //console.log(JSON.stringify(data, undefined, 4));
         return JSON.stringify(data, undefined, 4);
     }
 
