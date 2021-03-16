@@ -28,11 +28,11 @@ export default class Postman extends LightningElement {
     }
 
     handleHoverIn(e){
-        let targetStyle = e.target.style;
-        e.target.nextSibling.style.backgroundColor = targetStyle.backgroundColor;
-        e.target.nextSibling.style.color = targetStyle.color;
+        //e.target.nextSibling.style.backgroundColor = e.target.style.backgroundColor;
+        e.target.nextSibling.style.color = e.target.style.color;
         e.target.nextSibling.style.display = 'block';
     }
+
     handleHoverOut(e){
         e.target.nextSibling.style.display = 'none';
     }
@@ -73,15 +73,16 @@ export default class Postman extends LightningElement {
         console.log(`Endpoint is : ${this.endpoint}`);
         let start_time = Date.now();
         options.method = this.method;
-        console.log('++++++++++++++++++');
-        console.log(JSON.stringify(options));
-        console.log('++++++++++++++++++');
+        // console.log('++++++++++++++++++');
+        // console.log(JSON.stringify(options));
+        // console.log('++++++++++++++++++');
         let today = new Date();
+        let amORpm = today.getHours() >=0 && today.getHours() <=11 ? 'AM' : 'PM';
         let currentItem = {
             id: Math.random(1),
             ep: this.endpoint,
             value: this.endpoint.length < 30 ? this.endpoint : this.endpoint.substr(0,30) + '....',
-            timestamp: `${today.getDate()} ${today.getHours()} ${today.getMinutes()} ${today.getSeconds()}`
+            timestamp: `${today.getDate()}/${today.getMonth()}/${today.getFullYear()} ${today.getHours()}:${today.getMinutes()}:${today.getSeconds()} ${amORpm}`
         };
         fetch(this.endpoint, {
             method: this.method,
@@ -89,31 +90,40 @@ export default class Postman extends LightningElement {
             body : JSON.stringify(options.body)
         })
         .then(resp =>{
+            currentItem.status = resp.status;
             console.log(resp.status);
             if(resp.status !== 200) throw new Error(resp.status);
             return resp.json();
         })
         .then(data=>{
+            this.timetaken = Date.now() - start_time;
             console.log(data);
             this.response = this.process(data);
             currentItem.success = true;
+            currentItem.responsetime = this.timetaken;
+            this.history.unshift(currentItem);
+            this.history = this.processAndstylise(this.history);
         })
         .catch(error=>{
+            this.timetaken = Date.now() - start_time;
+            currentItem.responsetime = this.timetaken;
             console.log(`Error happened inside resp block ${error}`);
             this.response = `Error occurred with status : ${error}`;
             currentItem.success = false;
+            this.history.unshift(currentItem);
+            this.history = this.processAndstylise(this.history);
         });
-        this.timetaken = Date.now() - start_time;
-        this.history.unshift(currentItem);
-        this.history = this.processAndstylise(this.history);
     }
     processAndstylise(hist){
-        //let newhistory = [];
-        let expectedGradientChange = this.history.length === 0 ? 0.1 : 1/this.history.length;
-        this.alpha = parseFloat((this.alpha + expectedGradientChange)).toFixed(2);
-        if(this.alpha > 1) this.alpha = 1;
-        for (let h of hist){
-            h.style = h.success ? DEFAULT_STYLE + this.alpha + ")" : DEFAULT_ERROR_STYLE + this.alpha + ")";
+        let expectedGradientChange = (this.history.length === 0 ? 0.1 : 1/this.history.length).toFixed(2);
+        //console.log('--expectedGradientChange--' + expectedGradientChange);
+        for(let i=0; i<this.history.length; i++){
+            let h = this.history[i];
+            let alpha = (1-i*expectedGradientChange).toFixed(2);
+            if(alpha > 0.9) alpha = 0.9;
+            if(alpha < 0.1) alpha = 0.1;
+            //console.log('--.alpha--' + alpha);
+            h.style = h.success ? DEFAULT_STYLE + alpha + ")" : DEFAULT_ERROR_STYLE + alpha + ")";
         }
         return hist;
     }
@@ -154,7 +164,7 @@ export default class Postman extends LightningElement {
     }
 
     process(data){
-        console.log(JSON.stringify(data, undefined, 4));
+        //console.log(JSON.stringify(data, undefined, 4));
         return JSON.stringify(data, undefined, 4);
     }
 

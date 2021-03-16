@@ -7,6 +7,7 @@
     background-color: aliceblue;
     border: 2px solid black;
     border-radius: 5px;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 .container{
@@ -26,6 +27,7 @@
 
 .container--button{
     color: black;
+    padding: 2px;
 }
 
 .container--button__disabled{
@@ -56,6 +58,7 @@
 
 .history--item{
     list-style-type: none;
+    cursor:pointer;
 }
 
 .response{
@@ -105,7 +108,7 @@
     height: auto;
     width: auto;
     z-index: 1;
-    background-color: rgba(5, 122, 218, 1);
+    background-color: rgb(100, 157, 204);
     color: black;
     border-radius: 4px;
     padding: 4px;

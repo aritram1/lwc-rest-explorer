@@ -173,10 +173,10 @@ export default class Postmanoptions extends LightningElement {
     // }
     
     handleTabClick(e){
-        this.showAuth = false;
-        this.showHeaders = false;
-        this.showBody = false;
-        this.showRaw = false;
+        // this.showAuth = false;
+        // this.showHeaders = false;
+        // this.showBody = false;
+        // this.showRaw = false;
 
         let tabName = e.target.getAttribute('name');
         console.log('Inside handleTabClick. Tab clicked - ' + tabName);
@@ -185,22 +185,27 @@ export default class Postmanoptions extends LightningElement {
         //console.log('tabs->' + tabs.length);
         for(let tab of tabs){
             if(tab.getAttribute('name') === tabName){
-                if(this.method === 'GET' && tabName === 'Body') 
+                if(this.method === 'GET' && tabName === 'Body'){
                     alert('Body is not applicable for GET requests');
-                else 
+                }
+                else if(tabName === 'Headers'){
+                    alert('Send data as params instead of headers for now!');
+                }
+                else{
                     tab.classList.add('active');
+                }
             }
             else{
                 tab.classList.remove('active');
             }
         }
-
+        
         switch(tabName){
             case 'Authorization':
                 this.showAuth = true;
                 break;
             case 'Headers':
-                this.showHeaders = true;
+                //this.showHeaders = true;
                 break;
             case 'Body':
                 if(this.method !== 'GET'){
