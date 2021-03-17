@@ -38,14 +38,6 @@ app.use(function (req, res, next) {
     next();
 }); 
 
-let createResponse = function(path){
-    let time = new Date();
-    return {
-        'msg' : `reached ${path}`,
-        'Time' : '' + time.getHours() + ':' + time.getMinutes() + ':' + time.getSeconds() 
-    };
-}
-
 let handlePost = function(req){
     let data = {
         'headers' : req.headers,
@@ -55,18 +47,39 @@ let handlePost = function(req){
     return data;
 }
 
-app.use('/post', (req, res)=>{
+let createDefaultResponse = function(path, method){
     let response = {
-        method : req.method
+        'msg' : `reached ${path}`,
+        'method' : method,
+        'Time now' : new Date()
+    };
+    return response;
+}
+
+app.use('/:id', (req, res)=>{
+    let response = {
+
     };
     switch(req.method){
         case 'GET':
-            console.log(new Date() + ' Inside GET');
+            // console.log(new Date() + ' Inside GET');
+            response.data = createDefaultResponse('/', 'GET');
             break;
         case 'POST':
-            console.log(new Date() + 'Inside POST');
-            console.log('-->' + handlePost(req));
-            response.data = handlePost(req);
+            // console.log(new Date() + 'Inside POST');
+            // console.log('-->' + handlePost(req));
+            response.data = createDefaultResponse('/', 'POST');
+            response.customdata = handlePost(req);
+            break;
+        case 'PUT':
+            response.data = createDefaultResponse('/', 'PUT');
+            response.data.message = `Record with Id : ${req.params.id} is updated`;
+            // console.log(new Date() + ' Inside GET');
+            break;
+        case 'DELETE':
+            response.data = createDefaultResponse('/', 'DELETE');
+            response.data.message = `Record with Id : ${req.params.id} is deleted`;
+            // console.log(new Date() + ' Inside GET');
             break;
         default:
             console.log('Inside DEFAULT');
@@ -75,9 +88,9 @@ app.use('/post', (req, res)=>{
     res.send(response);
 });
 
-app.get('/', (req, res) => {
+app.use('/', (req, res) => {
     //  console.log(`You are inside main get request. Welcome! Some request params are : ${JSON.stringify(req.params)}. Done!`);
-    let data = createResponse('/');
+    let data = createDefaultResponse('/', req.method);
     res.json(data);
 });
 

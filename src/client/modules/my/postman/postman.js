@@ -1,12 +1,15 @@
 import { LightningElement, track } from 'lwc';
-const DEFAULT_GRADIENT_CHANGE = 0.05;
+//const DEFAULT_GRADIENT_CHANGE = 0.05;
 const DEFAULT_STYLE = "background-color: rgba(5, 122, 218, ";
 const DEFAULT_ERROR_STYLE = "background-color: rgba(255, 0, 0, ";
 const DEFAULT_RESPONSE = 'Response will appear here';
 
 export default class Postman extends LightningElement {
 
-    endpoint = 'http://0.0.0.0:3002/post';//'https://dog.ceo/api/breeds/image/random';//''https://jsonplaceholder.typicode.com/posts/';
+    endpoint = 'http://0.0.0.0:3002/';
+    // Some test APIs
+    //'https://dog.ceo/api/breeds/image/random';
+    //''https://jsonplaceholder.typicode.com/posts/';
     itemstyle = "background-color: rgba(5, 122, 218, 0)";
     alpha;
     @track history;
@@ -23,7 +26,7 @@ export default class Postman extends LightningElement {
         this.history = [];
         this.response = DEFAULT_RESPONSE;
         this.timetaken = '00';
-        this.method = 'POST';
+        this.method = 'GET';
         this.alpha = 0;
     }
 
@@ -38,9 +41,9 @@ export default class Postman extends LightningElement {
     }
 
     handleClick(event){
-        console.log('Auth received as : ' + JSON.stringify(this.auth));
-        console.log('Body received as : ' + JSON.stringify(this.body));
-        console.log('Headers received as : ' + JSON.stringify(this.headers));
+        // console.log('Auth received as : ' + JSON.stringify(this.auth));
+        // console.log('Body received as : ' + JSON.stringify(this.body));
+        // console.log('Headers received as : ' + JSON.stringify(this.headers));
         let options = {};
 
         if(this.auth){
@@ -81,13 +84,13 @@ export default class Postman extends LightningElement {
         let currentItem = {
             id: Math.random(1),
             ep: this.endpoint,
-            value: this.endpoint.length < 30 ? this.endpoint : this.endpoint.substr(0,30) + '....',
+            value: this.endpoint.length < 25 ? this.endpoint : this.endpoint.substr(0,25) + '..',
             timestamp: `${today.getDate()}/${today.getMonth()}/${today.getFullYear()} ${today.getHours()}:${today.getMinutes()}:${today.getSeconds()} ${amORpm}`
         };
         fetch(this.endpoint, {
             method: this.method,
             headers : options.headers,
-            body : JSON.stringify(options.body)
+            body : options.body
         })
         .then(resp =>{
             currentItem.status = resp.status;
