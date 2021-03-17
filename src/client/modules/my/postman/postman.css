@@ -108,8 +108,10 @@
     height: auto;
     width: auto;
     z-index: 1;
-    background-color: rgb(100, 157, 204);
-    color: white;
+    /* background-color: rgb(100, 157, 204); */
+    color: whitesmoke;
+    background-color: rgba(5, 122, 218, 0.9);
+    /* color: rgba(5, 122, 218, 0.66); */
     border-radius: 4px;
     padding: 4px;
     border: 1px solid;

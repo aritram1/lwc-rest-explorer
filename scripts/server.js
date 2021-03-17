@@ -56,43 +56,33 @@ let createDefaultResponse = function(path, method){
     return response;
 }
 
-app.use('/:id', (req, res)=>{
-    let response = {
-
-    };
+let rootHandler = (req, res, next)=>{
+    let response = {};
     switch(req.method){
         case 'GET':
-            // console.log(new Date() + ' Inside GET');
             response.data = createDefaultResponse('/', 'GET');
             break;
         case 'POST':
-            // console.log(new Date() + 'Inside POST');
-            // console.log('-->' + handlePost(req));
             response.data = createDefaultResponse('/', 'POST');
             response.customdata = handlePost(req);
             break;
         case 'PUT':
             response.data = createDefaultResponse('/', 'PUT');
-            response.data.message = `Record with Id : ${req.params.id} is updated`;
-            // console.log(new Date() + ' Inside GET');
+            response.data.message = req.params.id ? `Record with Id : ${req.params.id} is updated` : 'ID should be provided in POST';
             break;
         case 'DELETE':
             response.data = createDefaultResponse('/', 'DELETE');
-            response.data.message = `Record with Id : ${req.params.id} is deleted`;
-            // console.log(new Date() + ' Inside GET');
+            response.data.message = req.params.id ? `Record with Id : ${req.params.id} is deleted` : 'Id not provided in DELETE';
             break;
         default:
             console.log('Inside DEFAULT');
             break;
     }
     res.send(response);
-});
+}
 
-app.use('/', (req, res) => {
-    //  console.log(`You are inside main get request. Welcome! Some request params are : ${JSON.stringify(req.params)}. Done!`);
-    let data = createDefaultResponse('/', req.method);
-    res.json(data);
-});
+app.use('/', rootHandler);
+app.use('/:id', rootHandler);
 
 app.listen(PORT, () =>
     console.log(

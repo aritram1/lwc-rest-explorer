@@ -43,6 +43,7 @@
     "nodemonConfig": {
         "watch": [
             "./scripts/*.js",
+            "-r ./src/",
             "./src/*.html",
             "./src/*.js",
             "./src/*.css"
