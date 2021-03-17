@@ -88,11 +88,15 @@ export default class Postman extends LightningElement {
             value: this.endpoint.length < 25 ? this.endpoint : this.endpoint.substr(0,25) + '..',
             timestamp: `${today.getDate()}/${today.getMonth()}/${today.getFullYear()} ${today.getHours()}:${today.getMinutes()}:${today.getSeconds()} ${amORpm}`
         };
-        fetch(this.endpoint, {
-            method: this.method,
-            headers : Object.assign({}, options.headers),
-            body : Object.assign({}, options.body)
-        })
+        let fetchOptions = {
+            'method' : this.method
+        };
+        if(this.method !== 'GET'){
+            fetchOptions.headers  = Object.assign({}, options.headers);
+            fetchOptions.body = Object.assign({}, options.body);
+        }
+        
+        fetch(this.endpoint, fetchOptions)
         .then(resp =>{
             currentItem.status = resp.status;
             console.log(resp.status);
