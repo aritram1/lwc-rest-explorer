@@ -1,6 +1,6 @@
 # PostMan Lite
 This is a simple app, inspired by postman, written in LWCOSS, can be used to test rest endpoints.
-[`View Live`] (https://aritram1@github.io/lwc-rest-explorer)
+[`View Live`] (https://aritram1.github.io/lwc-rest-explorer)
 
 # How to start?
 Start simply by cloning the repo and running `npm install` followed by `npm run watch`. This will start the project with a local development server. 
