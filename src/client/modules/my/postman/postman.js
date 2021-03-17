@@ -6,7 +6,8 @@ const DEFAULT_RESPONSE = 'Response will appear here';
 
 export default class Postman extends LightningElement {
 
-    endpoint = 'http://0.0.0.0:3002/';
+    endpoint = 'https://dog.ceo/api/breeds/image/random';
+    //http://0.0.0.0:3002/';
     // Some test APIs
     //'https://dog.ceo/api/breeds/image/random';
     //''https://jsonplaceholder.typicode.com/posts/';
