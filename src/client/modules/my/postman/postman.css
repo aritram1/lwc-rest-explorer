@@ -1,8 +1,6 @@
-*{
-    padding: 2px;
-    margin :2px;
-    /* border: 1px solid  rgba(5, 122, 218, 0.3); */  /* debugging */  
-}
+/* *{
+    border: 1px solid blue;
+} */
 .postman{
     background-color: aliceblue;
     border: 2px solid black;
@@ -11,7 +9,7 @@
 }
 
 .container{
-    padding: 4%;
+    padding: 2%;
     border: 5px solid white;
 }
 
@@ -19,16 +17,22 @@
 .top{
     display: grid;
     grid-template-columns: 1fr 10fr 1fr;
+    grid-column-gap: 3px;
+    margin-top : 8px;
+    /* grid-auto-flow: column; */
 }
 
 .top--input{
     color: black;
     font-family: monospace;
+    /* width: 75%; */
 }
 
 .container--button{
     color: black;
-    padding: 2px;
+    font-size: small;
+    /* width: 50px;
+    align-items: right; */
 }
 
 .container--button__disabled{
@@ -37,14 +41,16 @@
 }
 
 .center{
-    padding: 2px;
+    margin-top: 8px;
+    margin-bottom: 8px;
 }
 
 .bottom{
     background-color:white;
     display: grid;
-    grid-template-columns: 1fr 5fr;
-    height: 100%;
+    grid-template-columns: 1fr 4fr;
+    /* width: auto; */
+    /* height: 100%; */
     /* border: 1px solid  rgba(5, 122, 218, 0.3);     */
 
 }
@@ -55,30 +61,33 @@
     background-color: rgba(5, 122, 218, 0.3);
     color: white;
     font-family: monospace;
+    /* width: 80%; */
 }
 
 .history--item{
     list-style-type: none;
     cursor:pointer;
     font-size: large;
+    border-radius: 2px;
+    margin: 2px;
 }
 
 .response{
-    border: 1px solid  rgba(5, 122, 218, 0.3);    
+    border: 1px solid rgba(5, 122, 218, 0.3);    
     font-family: monospace;
     background-color: white;
     background-image: linear-gradient(to left #385be9e5, #505875e5);
-    border-radius: 2px;
+    border-radius: 3px;
     margin: 2px;   
     padding:2px;
     text-align: left; 
     color: black;
     white-space: pre-wrap;
     font-size: large;
-    /* 
-    white-space: pre-line;
-    in constrast to white-spaces, pre-line removes the spaces
-    */
+    
+    /* white-space: pre-line; */
+    /* in constrast to white-spaces, pre-line removes the spaces */
+   
 }
 
 .header{
@@ -89,6 +98,7 @@
 .header img{
     width: 70px;
     height: 60px;
+    padding-top: 0px;
 }
 
 .appname{
@@ -100,7 +110,7 @@
 .time{
     background-color: antiquewhite;
     text-align: center;
-    padding-top: 26px;
+    padding-top: 25px;
     border-radius: 10px;
     border: 1px solid black;
     /* height: 15%; */
@@ -119,4 +129,42 @@
     border-radius: 4px;
     padding: 4px;
     border: 1px solid;
+}
+
+.endpoints{
+    display: none;
+    /* grid-auto-flow: rows; */
+    background-color: white;
+    position: absolute;
+    width:94.5%;
+    /* margin-left: 155px;
+    margin-top: 22px; */
+    /* width: 74%; */
+    height: auto;
+    /* padding: 2p x; */
+}
+
+/* .endpoints .active{
+    display: block;
+} */
+
+.endpointItem{
+    background-color: rgba(0, 128, 128, 0.1);
+    /* border: 1px solid white; */
+    margin: 2px;
+    padding: 2px;
+    cursor: pointer;
+    color: black;
+    font-family: monospace;
+    border-radius: 3px;
+}
+
+/* .endpointItem :hover{
+    color: red;
+    background-color: white;
+} */
+
+.methodOptions{
+    border: 1px solid black;
+    background-color: white;
 }

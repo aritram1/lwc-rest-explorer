@@ -5,19 +5,48 @@
                 <a href="https://github.com/aritram1/lwc-rest-explorer">
                     <img src="./resources/lwc.png"/>
                 </a>
-                <div class="appname" onclick={handleAppNameClick}>Postman Lite</div>
+                <div class="appname">Postman Lite</div>
                 <div class="time">{timetaken} ms </div>
             </div> 
             <div class="top">
-                <select name="methods" id="methods" onclick={handleRequestTypeChange}>
+                <select name="methods" id="methods" onclick={handleRequestTypeChange} class="methodOptions">
                     <option value="GET">GET</option>
                     <option value="POST">POST</option>
                     <option value="PUT">PUT</option>
                     <option value="DELETE">DELETE</option>
                 </select>
-                <input class="top--input" placeholder="api.google.com" type="text" value={endpoint} onchange={handleChange}/>
+                <template if:false={endpointBeingEdited}>
+                    <input class="top--input" placeholder="api.google.com" type="text" value={endpoint} onchange={handleChange} ondblclick={showAllEndPoints}/>
+                </template>
+                    
+                    <div class="endpoints">
+                        <template for:each={allEndpoints} for:item="ep">
+                            <div class="endpointItem" onclick={showInputBack} key={ep} onmousemove={highlightEndpoints} onmouseout={reverseHighlight}>
+                                {ep}
+                            </div>
+                        </template>
+                    </div>
+                
                 <input class="container--button" type="button" value="Submit" name="btnSubmit" onclick={handleClick}/>
+                <!-- <div></div>
+                
+                <div></div> -->
+
+                <!-- <template for:each={allEndpoints} for:item="ep">
+                    <div class="endpoints">
+                        <div key={ep}>{ep}</div>
+                    </div>
+                </template> -->
+                
             </div>
+
+            <!-- <div class="endpoints">
+                <template for:each={endpoints} for:item="ep">
+                    <div class="endpointItem" key={ep}>
+                        {ep}
+                    </div>
+                </template>
+            </div> -->
             
             <div class="center">
                 <my-postmanoptions 

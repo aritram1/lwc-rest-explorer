@@ -13,6 +13,7 @@ export default class Postman extends LightningElement {
     //'https://jsonplaceholder.typicode.com/posts/';
     itemstyle = "background-color: rgba(5, 122, 218, 0)";
     alpha;
+    @track allEndpoints = new Set();
     @track history;
     @track response;
     @track timetaken;
@@ -21,7 +22,52 @@ export default class Postman extends LightningElement {
     @track headers;
     @track auth;
     @track showtooltip;
+    @track endpointBeingEdited = false;
     
+    showAllEndPoints(event){
+        let el = event.target;
+        let box = el.nextSibling;
+        console.log('And the class is->' + box.getAttributeNode('class').value);
+        //let box = this.template.querySelector('#endpoints');
+        box.style.display = 'block';
+        // classList.add('active')//;style.display = 'block';
+        console.log('Invoked!~');
+        //this.endpointBeingEdited = true;
+    }
+
+    showInputBack(event){
+        let selectedEndpoint = event.target.textContent;
+        console.log('endpoint selected as : ---->' + selectedEndpoint);
+        this.endpoint = selectedEndpoint;
+        
+        let parentDiv = this.template.querySelector('div .endpoints');
+        // console.dir(parentDiv);
+        // console.log('hello ->' + parentDiv.style.display);
+        parentDiv.style.display = 'none';
+        this.endpointBeingEdited = false;
+        
+        // let el = event.target;
+        // let box = el.nextSibling;
+        // console.log('And the class is->' + box.getAttributeNode('class').value);
+        // //let box = this.template.querySelector('#endpoints');
+        // box.style.display = 'block';
+        // // classList.add('active')//;style.display = 'block';
+        // console.log('Invoked!~');
+        // this.clicked = true;
+    }
+
+    highlightEndpoints(event){
+        let el = event.target;
+        el.style.backgroundColor = 'teal';//'rgba(0, 128, 128, 0.1)';
+        el.style.color = 'white';
+    }
+
+    reverseHighlight(event){
+        let el = event.target;
+        el.style.backgroundColor = 'rgba(0, 128, 128, 0.1)';//'teal';//', 128, 0.1)';
+        el.style.color = 'black';
+    }
+
     constructor(){
         super();
         this.history = [];
@@ -30,6 +76,11 @@ export default class Postman extends LightningElement {
         this.method = 'GET';
         this.alpha = 0;
         this.endpoint = 'https://dog.ceo/api/breeds/image/random';
+        this.allEndpoints.add(this.endpoint);
+
+        this.allEndpoints.add('http://0.0.0.0:3002/');
+        this.allEndpoints.add('https://dog.ceo/api/breeds/image/random');
+        this.allEndpoints.add('https://jsonplaceholder.typicode.com/posts/');
     }
 
     handleHoverIn(e){
@@ -43,6 +94,9 @@ export default class Postman extends LightningElement {
     }
 
     handleClick(event){
+
+        this.allEndpoints.add(this.endpoint);
+        
         // console.log('Auth received as : ' + JSON.stringify(this.auth));
         // console.log('Body received as : ' + JSON.stringify(this.body));
         // console.log('Headers received as : ' + JSON.stringify(this.headers));
