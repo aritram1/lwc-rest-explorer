@@ -4,7 +4,9 @@
     </template>
     <!-- Tab links -->
     <div class="tab">
-        <div class="tablinks" name="Authorization" onclick={handleTabClick}>Authorization</div>
+        <template if:true={showAuth}>
+            <div class="tablinks" name="Authorization" onclick={handleTabClick}>Authorization</div>
+        </template>
         <div class="tablinks" name="Headers" onclick={handleTabClick}>Header</div>
         <div class="tablinks" name="Body" onclick={handleTabClick}>Body</div>
         <div class="tablinks" name="Raw" onclick={handleTabClick}>Raw</div>

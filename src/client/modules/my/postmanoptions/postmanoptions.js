@@ -30,20 +30,28 @@ export default class Postmanoptions extends LightningElement {
     @api endpoint;
 
     get raw(){
+        
         console.log('I am first getter');
         let raw_text = this.method + ' ' + this.endpoint + '\n HTTP 1.1';
-        let raw_request = Object.assign({}, this.auth, this.headers, JSON.parse(this.body));
-        if (raw_request){
-            for(let prop in raw_request){
-                if (Object.prototype.hasOwnProperty.call(raw_request, prop)) {
-                    raw_text = raw_text + '\n' + prop + ' - ' + raw_request[prop];
-                }
-            }
-        }
-        else{
-            raw_text = DEFAULT_REQUEST_RAW;
-        }
+        // raw_text = raw_text + this.headers;
+        // raw_text = raw_text + this.body;
+        
+        // let raw_request = Object.assign({}, this.auth, this.headers, JSON.parse(this.body));
+        // if (raw_request){
+        //     for(let prop in raw_request){
+        //         if (Object.prototype.hasOwnProperty.call(raw_request, prop)) {
+        //             raw_text = raw_text + '\n' + prop + ' - ' + raw_request[prop];
+        //         }
+        //     }
+        // }
+        // else{
+        //     raw_text = DEFAULT_REQUEST_RAW;
+        // }
         return raw_text;
+    }
+
+    get isGETrequest(){
+        return this.method === 'GET';
     }
 
     constructor(){
@@ -53,6 +61,7 @@ export default class Postmanoptions extends LightningElement {
         this.request = {};
         this.uname='';
         this.pwd='';
+        //this.endpoint = 'https://dog.ceo/api/breeds/image/random';
     }
 
     handleTabMovement(e){

@@ -12,8 +12,9 @@
 
 .container{
     padding: 4%;
-    border: 10px solid white;
+    border: 5px solid white;
 }
+
 
 .top{
     display: grid;
@@ -35,9 +36,9 @@
     color: black;
 }
 
-/* center{
-
-} */
+.center{
+    padding: 2px;
+}
 
 .bottom{
     background-color:white;
@@ -59,6 +60,7 @@
 .history--item{
     list-style-type: none;
     cursor:pointer;
+    font-size: large;
 }
 
 .response{
@@ -72,6 +74,7 @@
     text-align: left; 
     color: black;
     white-space: pre-wrap;
+    font-size: large;
     /* 
     white-space: pre-line;
     in constrast to white-spaces, pre-line removes the spaces
@@ -81,6 +84,7 @@
 .header{
     display: grid;
     grid-template-columns: 1fr 10fr 1fr;
+    /* padding-top: 100px; */
 }
 .header img{
     width: 70px;
@@ -89,14 +93,14 @@
 
 .appname{
     font-size: 30px;
-    padding-top: 15px;
+    padding-top: 19px;
     text-align: center;
 }
 
 .time{
     background-color: antiquewhite;
     text-align: center;
-    padding: 23px;
+    padding-top: 26px;
     border-radius: 10px;
     border: 1px solid black;
     /* height: 15%; */
@@ -110,7 +114,7 @@
     z-index: 1;
     /* background-color: rgb(100, 157, 204); */
     color: whitesmoke;
-    background-color: rgba(5, 122, 218, 0.9);
+    background-color: rgba(0, 75, 136, 0.788);
     /* color: rgba(5, 122, 218, 0.66); */
     border-radius: 4px;
     padding: 4px;

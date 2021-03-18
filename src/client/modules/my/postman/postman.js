@@ -6,11 +6,11 @@ const DEFAULT_RESPONSE = 'Response will appear here';
 
 export default class Postman extends LightningElement {
 
-    endpoint = 'https://dog.ceo/api/breeds/image/random';
+    @track endpoint;
+    //Some test APIs
     //http://0.0.0.0:3002/';
-    // Some test APIs
     //'https://dog.ceo/api/breeds/image/random';
-    //''https://jsonplaceholder.typicode.com/posts/';
+    //'https://jsonplaceholder.typicode.com/posts/';
     itemstyle = "background-color: rgba(5, 122, 218, 0)";
     alpha;
     @track history;
@@ -29,6 +29,7 @@ export default class Postman extends LightningElement {
         this.timetaken = '00';
         this.method = 'GET';
         this.alpha = 0;
+        this.endpoint = 'https://dog.ceo/api/breeds/image/random';
     }
 
     handleHoverIn(e){
@@ -128,10 +129,13 @@ export default class Postman extends LightningElement {
         for(let i=0; i<this.history.length; i++){
             let h = this.history[i];
             let alpha = (1-i*expectedGradientChange).toFixed(2);
+
+            // Bound the alpha to reaslitic values
             if(alpha > 0.9) alpha = 0.9;
             if(alpha < 0.1) alpha = 0.1;
-            //console.log('--.alpha--' + alpha);
+
             h.style = h.success ? DEFAULT_STYLE + alpha + ")" : DEFAULT_ERROR_STYLE + alpha + ")";
+            //console.log('--.h.style--' + h.style);
         }
         return hist;
     }
@@ -167,12 +171,20 @@ export default class Postman extends LightningElement {
 
     handleLineItemClick(event){
         this.endpoint = event.target.getAttributeNode("name").value;//event.target.textContent;
-        console.log('inside handleLineItemClick:' + this.endpoint);
         this.handleClick(event);
+        // console.log('inside handleLineItemClick:' + this.endpoint);
+        // let successfulRequest = event.target.getAttributeNode("success").value;
+        // console.log('%cinside handleLineItemClick successfulRequest :' + successfulRequest, '{color: red}');
+        // if(successfulRequest === 'true'){
+        //     this.handleClick(event);
+        // }
     }
 
     process(data){
-        //console.log(JSON.stringify(data, undefined, 4));
+        // Formats the json key-value separated by 4 spaces as indent. 
+        // @params 
+        // json data, replacer, blankspaceCount
+        
         return JSON.stringify(data, undefined, 4);
     }
 

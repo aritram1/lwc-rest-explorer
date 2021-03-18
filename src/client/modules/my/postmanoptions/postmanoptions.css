@@ -63,7 +63,7 @@
   }
   
   .raw{
-    /* padding-top: 4px; */
+    margin: 4px;
     background-color:#a1cbec40;
     border-radius: 4px;
     text-align: top;
@@ -71,8 +71,8 @@
     font-size: 90%;
     white-space: pre-wrap;
     border: 1px solid #ccc;
-    padding: 14px 16px;
-    padding-top: 0px;
+    padding: 4px;
+    /* padding-top: 0px; */
     font-family: monospace;
   }
 
