@@ -62,10 +62,13 @@
     }
 }
 
-@media screen and (max-width: 900px) {
+@media screen and (max-width: 600px) {
     .bottom {
         /* background-color: red; */
         grid-template-columns: 1fr;
+    }
+    .response{
+        background-color: red;
     }
 }
 
@@ -208,6 +211,7 @@
     width: auto;
     margin-bottom: 4%;
     border-radius: 10px;
+    z-index: 1;
     /* background-color: red; */
 }
 

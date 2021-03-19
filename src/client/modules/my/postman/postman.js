@@ -122,7 +122,7 @@ export default class Postman extends LightningElement {
         this.method = 'GET';
         this.alpha = 0;
         this.endpoint = 'https://dog.ceo/api/breeds/image/random';
-        this.allEndpoints.add(this.endpoint);
+        this.allEndpoints.add(this.generate('', ''));
         this.initData();
     }
 
@@ -141,9 +141,8 @@ export default class Postman extends LightningElement {
 
     generate(m, e){
         let o = {
-            // 'key' : m + '|' + Math.floor(Math.random(1)*10000) +  '|' + e,
-            'key' : Math.floor(Math.random(1)*10000),
-            'method' : m,
+            'key' : Math.floor(Math.random(1)*1000000),
+            'method' : m ? m :'GET',
             'ep' : e
         }
         console.log(o.key);
