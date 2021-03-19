@@ -27,7 +27,7 @@
                 </div> -->
             </div>
             <div class="settings--btn">
-                <input type="button" value="Ok" onclick={hideSettingsScreen}/>
+                <input type="button" value="OK" onclick={hideSettingsScreen}/>
             </div>
         </div>
     </template>
@@ -55,14 +55,17 @@
                 </template>
                     
                     <div class="endpoints">
-                        <template for:each={allEndpoints} for:item="ep">
-                            <div class="endpointItem" onclick={showInputBack} key={ep} onmousemove={highlightEndpoints} onmouseout={reverseHighlight}>
-                                {ep}
+                        <template for:each={allEndpoints} for:item="endpoint">
+                            <div class="endpointItem" onclick={showInputBack}
+                                                      onmousemove={highlightEndpoints} 
+                                                      onmouseout={reverseHighlight}
+                                                      key={endpoint.key} >
+                                {endpoint.method} - {endpoint.ep} 
                             </div>
                         </template>
                     </div>
                 
-                <input class="container--button" type="button" value="Submit" name="btnSubmit" onclick={handleClick}/>
+                <input class="container--button" type="button" value="Submit" name="btnSubmit" onclick={handleSubmit}/>
                 <!-- <div></div>
                 
                 <div></div> -->
@@ -94,40 +97,44 @@
             </div>
             <div class="bottom">
                 <div class="history">
-                    <template for:each={history} for:item='endpoint'>
-                        <template if:true={endpoint.success}>
-                            <li class="history--item" 
-                                key={endpoint.id}
-                                name={endpoint.ep}
-                                success={endpoint.success}
-                                style={endpoint.style}
-                                onclick={handleLineItemClick}
-                                onmouseover={handleHoverIn}
-                                onmouseout={handleHoverOut}>
-                                {endpoint.value}
-                            </li>
+                    <template if:true={history}>
+                        <template for:each={history} for:item='endpoint'>
+                            <template if:true={endpoint.success}>
+                                <li class="history--item" 
+                                    key={endpoint.id}
+                                    name={endpoint.ep}
+                                    success={endpoint.success}
+                                    style={endpoint.style}
+                                    onclick={handleLineItemClick}
+                                    onmouseover={handleHoverIn}
+                                    onmouseout={handleHoverOut}>
+                                    {endpoint.value}
+                                </li>
+                            </template>
+                            <template if:false={endpoint.success}>
+                                <li class="history--item history--item__disabled" 
+                                    style={endpoint.style}
+                                    key={endpoint.id}
+                                    name={endpoint.ep}
+                                    success={endpoint.success}
+                                    onclick={handleLineItemClick}
+                                    onmouseover={handleHoverIn}
+                                    onmouseout={handleHoverOut}>
+                                    {endpoint.value}
+                                </li>
+                            </template>
+    
+                            <div class="tooltip" key={endpoint.id}>
+                                Time : {endpoint.timestamp} <br/>
+                                Endpoint : {endpoint.ep} <br/>
+                                Status : {endpoint.status} <br/>
+                                Success : {endpoint.success} <br/>
+                                Time taken : {endpoint.responsetime}ms <br/>
+                            </div>
                         </template>
-                        <template if:false={endpoint.success}>
-                            <li class="history--item history--item__disabled" 
-                                style={endpoint.style}
-                                key={endpoint.id}
-                                name={endpoint.ep}
-                                success={endpoint.success}
-                                onclick={handleLineItemClick}
-                                onmouseover={handleHoverIn}
-                                onmouseout={handleHoverOut}>
-                                {endpoint.value}
-                            </li>
-                        </template>
-
-                        <div class="tooltip" key={endpoint.id}>
-                            Time : {endpoint.timestamp} <br/>
-                            Endpoint : {endpoint.ep} <br/>
-                            Status : {endpoint.status} <br/>
-                            Success : {endpoint.success} <br/>
-                            Time taken : {endpoint.responsetime}ms <br/>
-                        </div>
-                        
+                    </template>
+                    <template if:false={history}>
+                        Historical requests appear here
                     </template>
                 </div>
                 <div class="response">{response}</div>

@@ -11,6 +11,7 @@ export default class Postman extends LightningElement {
     //http://0.0.0.0:3002/';
     //'https://dog.ceo/api/breeds/image/random';
     //'https://jsonplaceholder.typicode.com/posts/';
+
     itemstyle = "background-color: rgba(5, 122, 218, 0)";
     alpha;
     @track allEndpoints = new Set();
@@ -76,9 +77,16 @@ export default class Postman extends LightningElement {
     }
 
     showInputBack(event){
-        let selectedEndpoint = event.target.textContent;
-        console.log('endpoint selected as : ---->' + selectedEndpoint);
-        this.endpoint = selectedEndpoint;
+        let selectedValue = event.target.textContent;
+        let found = selectedValue.indexOf('-');
+        let selectedEndpoint;
+        let selectedMethod;
+        if(found !== -1){
+            this.method = selectedValue.substr(0,found).trim();
+            this.endpoint = selectedValue.substr(found+1,selectedValue.length-1).trim();  
+        }
+        console.log('endpoint selected as : ---->' + this.endpoint);
+        console.log('method selected as : ---->' + this.method);
         
         let parentDiv = this.template.querySelector('div .endpoints');
         parentDiv.style.display = 'none';
@@ -115,10 +123,31 @@ export default class Postman extends LightningElement {
         this.alpha = 0;
         this.endpoint = 'https://dog.ceo/api/breeds/image/random';
         this.allEndpoints.add(this.endpoint);
+        this.initData();
+    }
 
-        this.allEndpoints.add('http://0.0.0.0:3002/');
-        this.allEndpoints.add('https://dog.ceo/api/breeds/image/random');
-        this.allEndpoints.add('https://jsonplaceholder.typicode.com/posts/');
+    initData(){
+        this.allEndpoints.add(this.generate('GET','http://0.0.0.0:3002/'));
+        this.allEndpoints.add(this.generate('GET','http://0.0.0.0:3002/'));
+        this.allEndpoints.add(this.generate('GET','https://dog.ceo/api/breeds/image/random'));
+        this.allEndpoints.add(this.generate('GET','https://jsonplaceholder.typicode.com/posts'));
+        this.allEndpoints.add(this.generate('GET','https://jsonplaceholder.typicode.com/posts/1'));
+        this.allEndpoints.add(this.generate('GET','https://jsonplaceholder.typicode.com/posts/1/comments'));
+        this.allEndpoints.add(this.generate('POST','https://jsonplaceholder.typicode.com/posts'));
+        this.allEndpoints.add(this.generate('PUT','https://jsonplaceholder.typicode.com/posts/1'));
+        this.allEndpoints.add(this.generate('PATCH','https://jsonplaceholder.typicode.com/posts/1'));
+        this.allEndpoints.add(this.generate('DELETE','https://jsonplaceholder.typicode.com/posts/1'));
+    }
+
+    generate(m, e){
+        let o = {
+            // 'key' : m + '|' + Math.floor(Math.random(1)*10000) +  '|' + e,
+            'key' : Math.floor(Math.random(1)*10000),
+            'method' : m,
+            'ep' : e
+        }
+        console.log(o.key);
+        return o;
     }
 
     handleHoverIn(e){
@@ -131,9 +160,9 @@ export default class Postman extends LightningElement {
         e.target.nextSibling.style.display = 'none';
     }
 
-    handleClick(event){
+    handleSubmit(){
 
-        this.allEndpoints.add(this.endpoint);
+        this.allEndpoints.add(this.generate(this.method,this.endpoint));
         
         // console.log('Auth received as : ' + JSON.stringify(this.auth));
         // console.log('Body received as : ' + JSON.stringify(this.body));

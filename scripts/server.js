@@ -12,7 +12,7 @@ app.use(express.json());
 
 // const DIST_DIR = './dist';
 
-const host = 'localhost';
+const host = 'localhost'; //add(this.generate
 const defaultPort = 3002;
 
 const HOST = process.env.API_HOST || host;
@@ -30,8 +30,6 @@ const PORT = process.env.API_PORT || defaultPort;
 
 // CORS middleware
 app.use(function (req, res, next) {
-    //res.append('Access-Control-Allow-Origin', `http://${host}:${defaultPort}`);
-    //res.append('Access-Control-Allow-Origin', 'http://localhost:3001');
     res.append('Access-Control-Allow-Origin', '*');
     res.append('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
     res.append('Access-Control-Allow-Headers', 'Content-Type');
