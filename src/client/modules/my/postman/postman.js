@@ -26,6 +26,8 @@ export default class Postman extends LightningElement {
     @track endpointBeingEdited = false;
     copyofBody;
     showSettings;
+    @track showAboutMe;
+
     @track theme = 0; //0 = Blue, 1 = Green
 
     showSettingsScreen(e){
@@ -65,6 +67,15 @@ export default class Postman extends LightningElement {
         }
     }
     
+    toggleAboutMeScreen(){
+        this.showAboutMe = !this.showAboutMe;
+    }
+    showAboutMeScreen(){
+        this.showAboutMe = true;
+    }
+    hideAboutMeScreen(){
+        this.showAboutMe = false;
+    }
     showAllEndPoints(event){
         event.target.nextSibling.style.display = 'block';
         // let box = el.nextSibling;

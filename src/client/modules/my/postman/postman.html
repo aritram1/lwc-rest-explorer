@@ -1,5 +1,6 @@
 <template>
-    <template if:true={showSettings}>
+    <!-- settings template -->
+    <!-- <template if:true={showSettings}>   
         <div class="settings">
             <h1> Settings </h1>
             <div class="settings--menu">
@@ -11,26 +12,12 @@
                         <option value="Wacky">Wacky</option>
                     </select>
                 </div>
-                <!-- <div class="settings--menuItem" onchange={handleThemeChange}> 
-                    <span>WIP 1</span>
-                    <select>
-                        <option value="Green">Green</option>
-                        <option value="Blue">Blue</option>
-                    </select>
-                </div>
-                <div class="settings--menuItem" onchange={handleThemeChange}>  
-                    <span>WIP 2</span>
-                    <select>
-                        <option value="Green">Green</option>
-                        <option value="Blue">Blue</option>
-                    </select>
-                </div> -->
             </div>
             <div class="settings--btn">
                 <input type="button" value="OK" onclick={hideSettingsScreen}/>
             </div>
         </div>
-    </template>
+    </template> -->
 
     
 
@@ -40,7 +27,7 @@
                 <a href="https://github.com/aritram1/lwc-rest-explorer">
                     <img src="./resources/lwc.png"/>
                 </a>
-                <div class="appname" onclick={showSettingsScreen}>Postman Lite</div>
+                <div class="appname">Postman Lite</div>
                 <div class="time">{timetaken} ms </div>
             </div> 
             <div class="top">
@@ -86,6 +73,8 @@
                 </template>
             </div> -->
             
+            
+
             <div class="center">
                 <my-postmanoptions 
                     method={method} 
@@ -139,6 +128,38 @@
                 </div>
                 <div class="response">{response}</div>
             </div>
+            <div class="footer">
+                <div class="footer__aboutme" onclick={showAboutMeScreen}>About Me</div> &nbsp; | &nbsp; 
+                <div class="footer__settings" onclick={showSettingsScreen}>Settings</div>
+            </div>
         </div>
     </div>
+
+    <!-- settings template -->
+    <template if:true={showSettings}>   
+        <div class="settings">
+            <h1> Settings </h1>
+            <div class="settings--menu">
+                <div class="settings--menuItem" onchange={handleThemeChange}> 
+                    <div>Theme</div>
+                    <select>
+                        <option value="Blue">Blue</option>
+                        <option value="Green">Green</option>
+                        <option value="Wacky">Wacky</option>
+                    </select>
+                </div>
+            </div>
+            <div class="settings--btn">
+                <input type="button" value="OK" onclick={hideSettingsScreen}/>
+            </div>
+        </div>
+    </template>
+    
+    <template if:true={showAboutMe}>   <!-- about me template -->
+        <div class="aboutme" onkeypress={hideAboutMeScreen}>
+            <div class=aboutme__message>Made with LWC <br/><br/> ~ @aritram1</div>
+            <input type="button" value="Ok" class="aboutme__btn" onclick={hideAboutMeScreen}/>
+        </div>
+    </template>
+
 </template>
