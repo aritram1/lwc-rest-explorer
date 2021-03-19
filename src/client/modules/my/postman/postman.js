@@ -23,16 +23,56 @@ export default class Postman extends LightningElement {
     @track auth;
     @track showtooltip;
     @track endpointBeingEdited = false;
+    copyofBody;
+    showSettings;
+    @track theme = 0; //0 = Blue, 1 = Green
+
+    showSettingsScreen(e){
+        this.showSettings = true;
+    }
+
+    hideSettingsScreen(e){
+        this.showSettings = false;
+    }
+
+    handleThemeChange(e){
+        console.log('Theme selected : ' + e.target.value);
+        this.theme = e.target.value;
+        if(this.theme === 'Green') {
+            this.template.querySelector('div.postman').style.backgroundColor = 'rgba(0, 128, 128, 0.2)';
+            this.template.querySelector('div.history').style.backgroundColor = 'rgba(0, 128, 128, 0.3)';
+            this.template.querySelector('div.history--Items').style.backgroundColor = 'rgba(0, 128, 128, 0.9)';
+
+            this.template.querySelector('div.settings').style.backgroundColor = 'rgba(0, 128, 128, 0.9)'; //.2
+            this.template.querySelector('div.settings--menu').style.backgroundColor = 'rgba(0, 128, 128, 0.7)'; //.3
+            this.template.querySelector('div.settings--menuItem').style.backgroundColor = 'rgba(0, 128, 128, 0.2)'; // 9
+        }
+        else if(this.theme === 'Blue'){
+            this.template.querySelector('div.postman').style.backgroundColor = 'rgba(0, 128, 128, 0.2)';
+            this.template.querySelector('div.history').style.backgroundColor = 'rgba(5,122,218,0.3)';
+
+            
+            this.template.querySelector('div.settings').style.backgroundColor = 'rgba(5,122,218,0.9)';
+            this.template.querySelector('div.settings--menu').style.backgroundColor = 'rgba(5,122,218,0.7)';
+            this.template.querySelector('div.settings--menuItem').style.backgroundColor = 'rgba(5,122,218,0.2)';
+        }
+        else if(this.theme === 'Wacky'){
+            this.template.querySelector('div.postman').style.backgroundColor = 'teal';//'rgba(0, 128, 128, 0.9)'
+            this.template.querySelector('div.settings').style.backgroundColor = 'blue';//'rgba(0, 128, 128, 0.2)'; //.2
+            this.template.querySelector('div.settings--menu').style.backgroundColor = 'yellow';//'rgba(0, 128, 128, 0.3)'; //.3
+            this.template.querySelector('div.settings--menuItem').style.backgroundColor = 'purple';
+        }
+    }
     
     showAllEndPoints(event){
-        let el = event.target;
-        let box = el.nextSibling;
-        console.log('And the class is->' + box.getAttributeNode('class').value);
-        //let box = this.template.querySelector('#endpoints');
-        box.style.display = 'block';
+        event.target.nextSibling.style.display = 'block';
+        // let box = el.nextSibling;
+        // console.log('And the class is->' + box.getAttributeNode('class').value);
+        // let box = this.template.querySelector('#endpoints');
+        // box.style.display = 'block';
         // classList.add('active')//;style.display = 'block';
-        console.log('Invoked!~');
-        //this.endpointBeingEdited = true;
+        // console.log('Invoked!~');
+        // this.endpointBeingEdited = true;
     }
 
     showInputBack(event){
@@ -41,8 +81,6 @@ export default class Postman extends LightningElement {
         this.endpoint = selectedEndpoint;
         
         let parentDiv = this.template.querySelector('div .endpoints');
-        // console.dir(parentDiv);
-        // console.log('hello ->' + parentDiv.style.display);
         parentDiv.style.display = 'none';
         this.endpointBeingEdited = false;
         
@@ -58,13 +96,13 @@ export default class Postman extends LightningElement {
 
     highlightEndpoints(event){
         let el = event.target;
-        el.style.backgroundColor = 'teal';//'rgba(0, 128, 128, 0.1)';
+        el.style.backgroundColor = 'teal';
         el.style.color = 'white';
     }
 
     reverseHighlight(event){
         let el = event.target;
-        el.style.backgroundColor = 'rgba(0, 128, 128, 0.1)';//'teal';//', 128, 0.1)';
+        el.style.backgroundColor = 'rgba(0, 128, 128, 0.1)';
         el.style.color = 'black';
     }
 
@@ -221,6 +259,13 @@ export default class Postman extends LightningElement {
     handleRequestTypeChange(event){
         console.log(`Method selected as : ${event.target.value}`);
         this.method = event.target.value;
+        if(this.method === 'GET'){
+            this.copyofBody = Object.assign({}, this.body);
+            this.body = undefined;
+        }
+        else{
+            this.body = this.copyofBody;
+        }
     }
 
     handleLineItemClick(event){
@@ -256,4 +301,5 @@ export default class Postman extends LightningElement {
         this.body = e.detail.bodychange;
         console.log('Inside handleBodyChange->' + JSON.stringify(this.body));
     }
+
 }

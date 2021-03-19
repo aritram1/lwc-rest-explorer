@@ -1,15 +1,50 @@
 <template>
+    <template if:true={showSettings}>
+        <div class="settings">
+            <h1> Settings </h1>
+            <div class="settings--menu">
+                <div class="settings--menuItem" onchange={handleThemeChange}> 
+                    <div>Theme</div>
+                    <select>
+                        <option value="Blue">Blue</option>
+                        <option value="Green">Green</option>
+                        <option value="Wacky">Wacky</option>
+                    </select>
+                </div>
+                <!-- <div class="settings--menuItem" onchange={handleThemeChange}> 
+                    <span>WIP 1</span>
+                    <select>
+                        <option value="Green">Green</option>
+                        <option value="Blue">Blue</option>
+                    </select>
+                </div>
+                <div class="settings--menuItem" onchange={handleThemeChange}>  
+                    <span>WIP 2</span>
+                    <select>
+                        <option value="Green">Green</option>
+                        <option value="Blue">Blue</option>
+                    </select>
+                </div> -->
+            </div>
+            <div class="settings--btn">
+                <input type="button" value="Ok" onclick={hideSettingsScreen}/>
+            </div>
+        </div>
+    </template>
+
+    
+
     <div class="postman">
         <div class="container">
             <div class="header">
                 <a href="https://github.com/aritram1/lwc-rest-explorer">
                     <img src="./resources/lwc.png"/>
                 </a>
-                <div class="appname">Postman Lite</div>
+                <div class="appname" onclick={showSettingsScreen}>Postman Lite</div>
                 <div class="time">{timetaken} ms </div>
             </div> 
             <div class="top">
-                <select name="methods" id="methods" onclick={handleRequestTypeChange} class="methodOptions">
+                <select name="methods" id="methods" onchange={handleRequestTypeChange} class="methodOptions">
                     <option value="GET">GET</option>
                     <option value="POST">POST</option>
                     <option value="PUT">PUT</option>

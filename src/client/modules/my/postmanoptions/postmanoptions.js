@@ -1,5 +1,6 @@
 import { LightningElement, track, api } from 'lwc';
-const DEFAULT_REQUEST_BODY = '{\n    "Id" : "10112"\n}'; //'{\n    "Key" : "Value"\n}'; //TESTING
+const DEFAULT_REQUEST_BODY = {"App" : "Postman-Lite", "Version": 1, "Released" : true}; //TESTING
+
 const DEFAULT_REQUEST_RAW = 'some specific raw';
 const ERROR_INVALID_JSON_BODY = 'The json is not well formed. Please check. Key-Value pairs must be enclosed with double quotes only.';
 export default class Postmanoptions extends LightningElement {
@@ -8,13 +9,12 @@ export default class Postmanoptions extends LightningElement {
     @track showHeaders;
     @track showBody;
     @track showRaw;
-    
+
     @track auth;
     @track authType;
     @track showBasicAuth;
     @track showOAuth2;
     @track error;
-
 
     @track uname;
     @track pwd;
@@ -25,30 +25,37 @@ export default class Postmanoptions extends LightningElement {
 
     @track headers;
     @track body;
+    @track raw;
+    @track copyOfbody;
 
-    @api method;
     @api endpoint;
+    @api method;
 
-    get raw(){
-        
-        console.log('I am first getter');
-        let raw_text = this.method + ' ' + this.endpoint + '\n HTTP 1.1';
-        // raw_text = raw_text + this.headers;
-        // raw_text = raw_text + this.body;
-        
-        // let raw_request = Object.assign({}, this.auth, this.headers, JSON.parse(this.body));
-        // if (raw_request){
-        //     for(let prop in raw_request){
-        //         if (Object.prototype.hasOwnProperty.call(raw_request, prop)) {
-        //             raw_text = raw_text + '\n' + prop + ' - ' + raw_request[prop];
-        //         }
-        //     }
-        // }
-        // else{
-        //     raw_text = DEFAULT_REQUEST_RAW;
-        // }
+    // @api get method(){
+    //     return this.method;
+    // }
+    // set method(v){
+    //     // eslint-disable-next-line @lwc/lwc/no-api-reassignments
+    //     this.method = v;
+    //     this.raw = this.generateRawRequest();
+    // }
+    
+    generateRawRequest(){
+        let raw_text = this.method + ' ' + this.endpoint + ' HTTP 1.1\n';
+        if(this.auth){
+            raw_text = raw_text + 'auth' + JSON.stringify(this.auth, undefined, 4) + '\n';
+        }
+        if(this.body){
+            raw_text = raw_text + 'body' + this.body + '\n';
+        }
+        if(this.headers){
+            raw_text = raw_text + 'headers' + this.headers + '\n';
+        }
+        // raw_text = raw_text.replaceAll('"', '').replace('{','').replace('}','');
+        console.log(raw_text);
         return raw_text;
     }
+    
 
     get isGETrequest(){
         return this.method === 'GET';
@@ -57,11 +64,13 @@ export default class Postmanoptions extends LightningElement {
     constructor(){
         super();
         console.log('I am first constructor');
-        this.body = DEFAULT_REQUEST_BODY;
-        this.request = {};
+        this.copyOfbody = JSON.stringify(DEFAULT_REQUEST_BODY, undefined, 4);
         this.uname='';
         this.pwd='';
-        //this.endpoint = 'https://dog.ceo/api/breeds/image/random';
+    }
+
+    connectedCallback(){
+        this.raw = this.generateRawRequest('GET', 'https://dog.ceo/api/breeds/image/random');
     }
 
     handleTabMovement(e){
@@ -194,15 +203,7 @@ export default class Postmanoptions extends LightningElement {
         //console.log('tabs->' + tabs.length);
         for(let tab of tabs){
             if(tab.getAttribute('name') === tabName){
-                if(this.method === 'GET' && tabName === 'Body'){
-                    alert('Body is not applicable for GET requests');
-                }
-                // else if(tabName === 'Headers'){
-                //     alert('Send data as params instead of headers for now!');
-                // }
-                else{
-                    tab.classList.add('active');
-                }
+                tab.classList.add('active');
             }
             else{
                 tab.classList.remove('active');
@@ -214,13 +215,23 @@ export default class Postmanoptions extends LightningElement {
                 this.showAuth = true;
                 break;
             case 'Headers':
-                //this.showHeaders = true;
+                this.showHeaders = true;
                 break;
             case 'Body':
-                if(this.method !== 'GET'){
+                if(this.method === 'GET'){
+                    this.copyOfbody = this.body;
+                    this.body = '';
+                }
+                else{
+                    if(!this.body){
+                        this.body = this.copyOfbody;
+                    }
                     this.showBody = true;
                 }
-                //this.body = JSON.parse(JSON.stringify(this.body));
+                // else{
+                //     if(this.copyOfbody)
+                //         this.body = this.copy
+                // }
                 break;
             case 'Raw':
                 this.showRaw = true;
@@ -229,5 +240,6 @@ export default class Postmanoptions extends LightningElement {
                 this.error = 'Tab must be one of the 4 available options';
                 break;
         }
+        this.raw = this.generateRawRequest();
     }
 }
