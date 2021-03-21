@@ -45,29 +45,38 @@ export default class Postman extends LightningElement {
     handleThemeChange(e){
         console.log('Theme selected : ' + e.target.value);
         this.theme = e.target.value;
+        let container = this.template.querySelector('div.container');
+        let postman = this.template.querySelector('div.postman');
+        let history = this.template.querySelector('div.history');
+        let historyItem = this.template.querySelector('div.history--item');
+        let settings = this.template.querySelector('div.settings');
+        let menu = this.template.querySelector('div.settings--menu');
+        let menuitem = this.template.querySelector('div.settings--menuItem');
         if(this.theme === 'Green') {
-            this.template.querySelector('div.postman').style.backgroundColor = 'rgba(0, 128, 128, 0.2)';
-            this.template.querySelector('div.history').style.backgroundColor = 'rgba(0, 128, 128, 0.3)';
-            this.template.querySelector('div.history--Items').style.backgroundColor = 'rgba(0, 128, 128, 0.9)';
-
-            this.template.querySelector('div.settings').style.backgroundColor = 'rgba(0, 128, 128, 0.9)'; //.2
-            this.template.querySelector('div.settings--menu').style.backgroundColor = 'rgba(0, 128, 128, 0.7)'; //.3
-            this.template.querySelector('div.settings--menuItem').style.backgroundColor = 'rgba(0, 128, 128, 0.2)'; // 9
+            container.style.backgroundColor = 'rgba(0, 128, 128, 0.2)';
+            postman.style.backgroundColor = 'rgba(0, 128, 128, 0.3)';
+            history.style.backgroundColor = 'rgba(0, 128, 128, 0.9)';
+            if(historyItem) historyItem.style.backgroundColor = 'rgba(0, 128, 128, 0.9)';
+            settings.style.backgroundColor = 'rgba(0, 128, 128, 0.7)';
+            menu.style.backgroundColor = 'rgba(0, 128, 128, 0.2)';
+            menuitem.style.backgroundColor = 'rgba(0, 128, 128, 0.2)';
         }
         else if(this.theme === 'Blue'){
-            this.template.querySelector('div.postman').style.backgroundColor = 'rgba(0, 128, 128, 0.2)';
-            this.template.querySelector('div.history').style.backgroundColor = 'rgba(5,122,218,0.3)';
-
-            
-            this.template.querySelector('div.settings').style.backgroundColor = 'rgba(5,122,218,0.9)';
-            this.template.querySelector('div.settings--menu').style.backgroundColor = 'rgba(5,122,218,0.7)';
-            this.template.querySelector('div.settings--menuItem').style.backgroundColor = 'rgba(5,122,218,0.2)';
+            container.style.backgroundColor = '#f0f8ff';
+            postman.style.backgroundColor = 'rgba(0, 128, 128, 0.2)';
+            history.style.backgroundColor = 'rgba(5,122,218,0.3)';
+            if(historyItem) historyItem.style.backgroundColor = 'rgba(5, 122, 218, 0.3)';
+            settings.style.backgroundColor = 'rgba(5,122,218,0.9)';
+            menu.style.backgroundColor = 'rgba(5,122,218,0.7)';
+            menuitem.style.backgroundColor = 'rgba(5,122,218,0.2)';
         }
         else if(this.theme === 'Wacky'){
-            this.template.querySelector('div.postman').style.backgroundColor = 'teal';//'rgba(0, 128, 128, 0.9)'
-            this.template.querySelector('div.settings').style.backgroundColor = 'blue';//'rgba(0, 128, 128, 0.2)'; //.2
-            this.template.querySelector('div.settings--menu').style.backgroundColor = 'yellow';//'rgba(0, 128, 128, 0.3)'; //.3
-            this.template.querySelector('div.settings--menuItem').style.backgroundColor = 'purple';
+            postman.style.backgroundColor = 'teal';
+            //history.style.backgroundColor = 'rgba(0, 128, 128, 0.9)';
+            //historyItem.style.backgroundColor = 'rgba(0, 128, 128, 0.9)';
+            settings.style.backgroundColor = 'blue';
+            menu.style.backgroundColor = 'yellow';
+            menuitem.style.backgroundColor = 'purple';
             this.template.querySelector('div.appname').style.color = 'white';
         }
     }

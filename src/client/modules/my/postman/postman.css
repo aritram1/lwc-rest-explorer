@@ -193,6 +193,7 @@
     width: 15px;
     height: 15px;
     padding: 2px;
+    cursor: pointer;
 }
 
 .headerlinks{
@@ -216,7 +217,7 @@
 .aboutme{
     float: right;
     color: white;
-    background-color:rgba(2, 126, 228, 0.9);
+    background-color:#0776d1;
     height: auto;
     width: auto;
     position: absolute;
@@ -224,10 +225,12 @@
     border-radius: 5px;
     display: flex;
     flex-direction: column;
+    z-index: 1;
 }
 
 .aboutme__message{
     padding: 4px;
+    font-family: monospace;
 }
 
 .aboutme__btn{
@@ -242,23 +245,24 @@
     width: auto;
     border-radius: 8px;
     text-align: center;
-    width: 50%;
     float: right;
+    z-index: 1;
+    /* width: 50%; */
     /* margin-left: 38%; */
+    font-family: monospace;
 }
 
-.settings h1{
+.settings h3{
     color: white;
-    
 }
 
 .settings--menu{
     background-color:rgba(5,122,218,0.8);
-    align-content: center;
     padding: 2px;
     width: auto;
-    /* margin-bottom: 4%; */
     border-radius: 10px;
+    /* align-content: center; */
+    /* margin-bottom: 4%; */
     /* z-index: 1; */
     /* background-color: red; */
 }

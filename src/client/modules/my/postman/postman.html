@@ -5,7 +5,7 @@
         <!-- settings template -->
         <template if:true={showSettings}>   
             <div class="settings">
-                <h1> Settings </h1>
+                <h3> Settings </h3>
                 <div class="settings--menu">
                     <div class="settings--menuItem" onchange={handleThemeChange}> 
                         <div>Theme</div>
@@ -22,7 +22,8 @@
             </div>
         </template>
 
-        <template if:true={showAboutMe}>   <!-- about me template -->
+        <!-- about me template -->
+        <template if:true={showAboutMe}>
             <div class="aboutme">
                 <div class=aboutme__message>Made with LWC <br/><br/> ~ @aritram1</div>
                 <input type="button" value="Ok" class="aboutme__btn" onclick={hideAboutMeScreen}/>
@@ -30,25 +31,12 @@
         </template>
 
         <div class="topheaderbar">
-            <img src="./resources/lwc.png" class="headermenuicon" onclick={showHeaderLinks}/>
+            <img src="./resources/Settings-icon.png" class="headermenuicon" onclick={showHeaderLinks}/>
             <div class="headerlinks" onblur={hideHeaderLinks}>
                 <div class="headerlink__aboutme" onclick={toggleAboutMeScreen}> <u>A</u>bout Me</div>
                 <div class="headerlink__settings" onclick={toggleSettingsScreen}> <u>S</u>ettings</div>
             </div>
-            <!-- <div class=topheaderbar__right>
-                <img src="./resources/lwc.png" onclick={showHeaderMenu}/>
-                <img src="./resources/lwc.png" onclick={showHeaderMenu}/>
-            </div> -->
         </div>
-
-        <!-- <div class="topheaderbar">
-            <img src="./resources/lwc.png" class="headermenu    icon" onclick={showHeaderMenu}/>
-            <div class="headerlinks">
-                <div class="headerlink__aboutme" onclick={toggleAboutMeScreen}> About Me</div>
-                <div class="headerlink__settings" onclick={toggleSettingsScreen}> Settings</div>
-            </div>
-            div.right
-        </div> -->
         <div class="container">
             <div class="header">
                 <a href="https://github.com/aritram1/lwc-rest-explorer">
