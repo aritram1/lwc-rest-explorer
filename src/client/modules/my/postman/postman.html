@@ -1,27 +1,54 @@
 <template>
-    <!-- settings template -->
-    <!-- <template if:true={showSettings}>   
-        <div class="settings">
-            <h1> Settings </h1>
-            <div class="settings--menu">
-                <div class="settings--menuItem" onchange={handleThemeChange}> 
-                    <div>Theme</div>
-                    <select>
-                        <option value="Blue">Blue</option>
-                        <option value="Green">Green</option>
-                        <option value="Wacky">Wacky</option>
-                    </select>
+    
+    <div class="postman">
+        
+        <!-- settings template -->
+        <template if:true={showSettings}>   
+            <div class="settings">
+                <h1> Settings </h1>
+                <div class="settings--menu">
+                    <div class="settings--menuItem" onchange={handleThemeChange}> 
+                        <div>Theme</div>
+                        <select>
+                            <option value="Blue">Blue</option>
+                            <option value="Green">Green</option>
+                            <option value="Wacky">Wacky</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="settings--btn">
+                    <input type="button" value="OK" onclick={hideSettingsScreen}/>
                 </div>
             </div>
-            <div class="settings--btn">
-                <input type="button" value="OK" onclick={hideSettingsScreen}/>
+        </template>
+
+        <template if:true={showAboutMe}>   <!-- about me template -->
+            <div class="aboutme">
+                <div class=aboutme__message>Made with LWC <br/><br/> ~ @aritram1</div>
+                <input type="button" value="Ok" class="aboutme__btn" onclick={hideAboutMeScreen}/>
             </div>
+        </template>
+
+        <div class="topheaderbar">
+            <img src="./resources/lwc.png" class="headermenuicon" onclick={showHeaderLinks}/>
+            <div class="headerlinks" onblur={hideHeaderLinks}>
+                <div class="headerlink__aboutme" onclick={toggleAboutMeScreen}> <u>A</u>bout Me</div>
+                <div class="headerlink__settings" onclick={toggleSettingsScreen}> <u>S</u>ettings</div>
+            </div>
+            <!-- <div class=topheaderbar__right>
+                <img src="./resources/lwc.png" onclick={showHeaderMenu}/>
+                <img src="./resources/lwc.png" onclick={showHeaderMenu}/>
+            </div> -->
         </div>
-    </template> -->
 
-    
-
-    <div class="postman">
+        <!-- <div class="topheaderbar">
+            <img src="./resources/lwc.png" class="headermenu    icon" onclick={showHeaderMenu}/>
+            <div class="headerlinks">
+                <div class="headerlink__aboutme" onclick={toggleAboutMeScreen}> About Me</div>
+                <div class="headerlink__settings" onclick={toggleSettingsScreen}> Settings</div>
+            </div>
+            div.right
+        </div> -->
         <div class="container">
             <div class="header">
                 <a href="https://github.com/aritram1/lwc-rest-explorer">
@@ -34,8 +61,8 @@
                 <select name="methods" id="methods" onchange={handleRequestTypeChange} class="methodOptions">
                     <option value="GET">GET</option>
                     <option value="POST">POST</option>
-                    <option value="PUT">PUT</option>
-                    <option value="DELETE">DELETE</option>
+                    <!-- <option value="PUT">PUT</option>
+                    <option value="DELETE">DELETE</option> -->
                 </select>
                 <template if:false={endpointBeingEdited}>
                     <input class="top--input" placeholder="api.google.com" type="text" value={endpoint} onchange={handleChange} ondblclick={showAllEndPoints}/>
@@ -127,39 +154,14 @@
                     </template>
                 </div>
                 <div class="response">{response}</div>
-            </div>
-            <div class="footer">
-                <div class="footer__aboutme" onclick={showAboutMeScreen}>About Me</div> &nbsp; | &nbsp; 
-                <div class="footer__settings" onclick={showSettingsScreen}>Settings</div>
+
+                <!-- <div class="footer">
+                    <div class="footer__aboutme" onclick={toggleAboutMeScreen}>About Me</div> &nbsp; | &nbsp; 
+                    <div class="footer__settings" onclick={toggleSettingsScreen}>Settings</div>
+                </div> -->
+
             </div>
         </div>
     </div>
-
-    <!-- settings template -->
-    <template if:true={showSettings}>   
-        <div class="settings">
-            <h1> Settings </h1>
-            <div class="settings--menu">
-                <div class="settings--menuItem" onchange={handleThemeChange}> 
-                    <div>Theme</div>
-                    <select>
-                        <option value="Blue">Blue</option>
-                        <option value="Green">Green</option>
-                        <option value="Wacky">Wacky</option>
-                    </select>
-                </div>
-            </div>
-            <div class="settings--btn">
-                <input type="button" value="OK" onclick={hideSettingsScreen}/>
-            </div>
-        </div>
-    </template>
-    
-    <template if:true={showAboutMe}>   <!-- about me template -->
-        <div class="aboutme" onkeypress={hideAboutMeScreen}>
-            <div class=aboutme__message>Made with LWC <br/><br/> ~ @aritram1</div>
-            <input type="button" value="Ok" class="aboutme__btn" onclick={hideAboutMeScreen}/>
-        </div>
-    </template>
 
 </template>

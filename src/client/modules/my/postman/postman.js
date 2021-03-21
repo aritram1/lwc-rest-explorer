@@ -30,13 +30,17 @@ export default class Postman extends LightningElement {
 
     @track theme = 0; //0 = Blue, 1 = Green
 
-    showSettingsScreen(e){
-        this.showSettings = true;
+    showHeaderLinks(e){
+        this.template.querySelector('div.headerlinks').style.display = 'block';
+        // e.target.nextSibling.style.display = 'block';
     }
 
-    hideSettingsScreen(e){
-        this.showSettings = false;
+    hideHeaderLinks(e){
+        this.template.querySelector('div.headerlinks').style.display = 'none';
+        // e.target.nextSibling.style.display = 'block';
     }
+
+
 
     handleThemeChange(e){
         console.log('Theme selected : ' + e.target.value);
@@ -64,18 +68,28 @@ export default class Postman extends LightningElement {
             this.template.querySelector('div.settings').style.backgroundColor = 'blue';//'rgba(0, 128, 128, 0.2)'; //.2
             this.template.querySelector('div.settings--menu').style.backgroundColor = 'yellow';//'rgba(0, 128, 128, 0.3)'; //.3
             this.template.querySelector('div.settings--menuItem').style.backgroundColor = 'purple';
+            this.template.querySelector('div.appname').style.color = 'white';
         }
     }
     
     toggleAboutMeScreen(){
         this.showAboutMe = !this.showAboutMe;
+        this.template.querySelector('div.headerlinks').style.display = 'none';
     }
-    showAboutMeScreen(){
-        this.showAboutMe = true;
-    }
+
     hideAboutMeScreen(){
         this.showAboutMe = false;
     }
+
+    toggleSettingsScreen(){
+        this.showSettings = !this.showSettings;
+        this.template.querySelector('div.headerlinks').style.display = 'none';
+    }
+
+    hideSettingsScreen(e){
+        this.showSettings = false;
+    }
+
     showAllEndPoints(event){
         event.target.nextSibling.style.display = 'block';
         // let box = el.nextSibling;
