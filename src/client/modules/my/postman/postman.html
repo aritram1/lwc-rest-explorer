@@ -30,6 +30,7 @@
             </div>
         </template>
 
+        <!-- top header bar. consists of app menu, icon and header links -->
         <div class="topheaderbar">
             <img src="./resources/Settings-icon.png" class="headermenuicon" onclick={showHeaderLinks}/>
             <div class="headerlinks" onblur={hideHeaderLinks}>
@@ -37,7 +38,11 @@
                 <div class="headerlink__settings" onclick={toggleSettingsScreen}> <u>S</u>ettings</div>
             </div>
         </div>
+
+        <!-- container section. consists of header, center and footer -->
         <div class="container">
+            
+            <!-- header section. consists of icon, app name and timer -->
             <div class="header">
                 <a href="https://github.com/aritram1/lwc-rest-explorer">
                     <img src="./resources/lwc.png"/>
@@ -45,51 +50,40 @@
                 <div class="appname">Postman Lite</div>
                 <div class="time">{timetaken} ms </div>
             </div> 
+            
+            <!-- top section. consists of allowed methods, endpoint and submit button -->
             <div class="top">
+                <!-- Allowed methods -->
                 <select name="methods" id="methods" onchange={handleRequestTypeChange} class="methodOptions">
                     <option value="GET">GET</option>
                     <option value="POST">POST</option>
-                    <!-- <option value="PUT">PUT</option>
-                    <option value="DELETE">DELETE</option> -->
+                    <option value="PUT">PUT</option>
+                    <option value="DELETE">DELETE</option>
                 </select>
+                
+                <!-- Provide your endpoint here -->
                 <template if:false={endpointBeingEdited}>
                     <input class="top--input" placeholder="api.google.com" type="text" value={endpoint} onchange={handleChange} ondblclick={showAllEndPoints}/>
                 </template>
-                    
-                    <div class="endpoints">
-                        <template for:each={allEndpoints} for:item="endpoint">
-                            <div class="endpointItem" onclick={showInputBack}
-                                                      onmousemove={highlightEndpoints} 
-                                                      onmouseout={reverseHighlight}
-                                                      key={endpoint.key} >
-                                {endpoint.method} - {endpoint.ep} 
-                            </div>
-                        </template>
-                    </div>
-                
-                <input class="container--button" type="button" value="Submit" name="btnSubmit" onclick={handleSubmit}/>
-                <!-- <div></div>
-                
-                <div></div> -->
 
-                <!-- <template for:each={allEndpoints} for:item="ep">
-                    <div class="endpoints">
-                        <div key={ep}>{ep}</div>
-                    </div>
-                </template> -->
+                <!-- All existing endpoints, shown in a pop up like div having mouse in/out handlers -->
+                <div class="endpoints">
+                    <template for:each={allEndpoints} for:item="endpoint">
+                        <div class="endpointItem" onclick={showInputBack}
+                                                    onmousemove={highlightEndpoints} 
+                                                    onmouseout={reverseHighlight}
+                                                    key={endpoint.key} >
+                            {endpoint.method} - {endpoint.ep} 
+                        </div>
+                    </template>
+                </div>
                 
+                <!-- The submit button -->
+                <input class="container--button" type="button" value="Submit" name="btnSubmit" onclick={handleSubmit}/>                
+            
             </div>
 
-            <!-- <div class="endpoints">
-                <template for:each={endpoints} for:item="ep">
-                    <div class="endpointItem" key={ep}>
-                        {ep}
-                    </div>
-                </template>
-            </div> -->
-            
-            
-
+            <!-- Center section. consists of another LWC component comprising of Options -->
             <div class="center">
                 <my-postmanoptions 
                     method={method} 
@@ -99,10 +93,14 @@
                     onbodychange = {handleBodyChange}>
                 </my-postmanoptions>
             </div>
+
+            <!-- bottom section. consists of current response and historical requests -->
             <div class="bottom">
                 <div class="history">
                     <template if:true={history}>
                         <template for:each={history} for:item='endpoint'>
+
+                            <!-- Successful request template -->
                             <template if:true={endpoint.success}>
                                 <li class="history--item" 
                                     key={endpoint.id}
@@ -115,6 +113,8 @@
                                     {endpoint.value}
                                 </li>
                             </template>
+
+                            <!-- Failed request template -->
                             <template if:false={endpoint.success}>
                                 <li class="history--item history--item__disabled" 
                                     style={endpoint.style}
@@ -127,7 +127,7 @@
                                     {endpoint.value}
                                 </li>
                             </template>
-    
+                            <!-- Tooltip template, displayed when a history item is hovered -->
                             <div class="tooltip" key={endpoint.id}>
                                 Time : {endpoint.timestamp} <br/>
                                 Endpoint : {endpoint.ep} <br/>
@@ -137,19 +137,23 @@
                             </div>
                         </template>
                     </template>
+
+                    <!-- All historical requests template -->
                     <template if:false={history}>
                         Historical requests appear here
                     </template>
                 </div>
+
+                <!-- The response section consists of the response from the current/latest request -->
                 <div class="response">{response}</div>
-
-                <!-- <div class="footer">
-                    <div class="footer__aboutme" onclick={toggleAboutMeScreen}>About Me</div> &nbsp; | &nbsp; 
-                    <div class="footer__settings" onclick={toggleSettingsScreen}>Settings</div>
-                </div> -->
-
+            
+            <!-- bottom section ends -->
             </div>
+        
+        <!-- container section ends -->
         </div>
+        
+    <!-- postman section ends -->       
     </div>
-
+    
 </template>

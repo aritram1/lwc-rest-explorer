@@ -228,10 +228,6 @@ export default class Postmanoptions extends LightningElement {
                     }
                     this.showBody = true;
                 }
-                // else{
-                //     if(this.copyOfbody)
-                //         this.body = this.copy
-                // }
                 break;
             case 'Raw':
                 this.showRaw = true;

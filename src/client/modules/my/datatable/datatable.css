@@ -1,17 +1,24 @@
-
-
 .header{
     padding : 1%;
     border: 1px solid #ccc;
 }
 
 .header__contenttype{
-    display: flex;
-    padding: 5px;
-    margin: 10px;
+    display: grid;
+    /* padding: 2px; */
+    /* margin: 2px; */
     cursor: wait;
-    /* grid-template-columns: 2fr 9fr; */
-    grid-row-gap: 4px;
+}
+
+.header__contenttype *{
+    margin-right : 4px;
+    margin-bottom: 4px;
+    font-family: monospace;
+    /* padding: 4px; */
+}
+
+.header__btn{
+    /* margin-left: 12px; */
 }
 
     /* 
