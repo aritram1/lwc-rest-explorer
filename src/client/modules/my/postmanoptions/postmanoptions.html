@@ -49,8 +49,8 @@
     </template>
     
     <template if:true={showHeaders}>
-        <div id="Headers" onupdate={handleDataTableUpdate} class="tabContent">
-            <my-datatable></my-datatable>
+        <div id="Headers" class="tabContent"> <!-- onupdate={handleDataTableUpdate} TBD --> 
+            <my-datatable onheaderchange={handleHeaderTableUpdate}></my-datatable>
         </div>
     </template>
     

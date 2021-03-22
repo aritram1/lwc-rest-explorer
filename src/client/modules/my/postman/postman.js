@@ -255,7 +255,7 @@ export default class Postman extends LightningElement {
             fetchOptions.headers  = Object.assign({}, options.headers);
             fetchOptions.body = Object.assign({}, options.body);
         }
-        
+        console.log('fetchoptions-> ' + JSON.stringify(fetchOptions));
         fetch(this.endpoint, fetchOptions)
         .then(resp =>{
             currentItem.status = resp.status;

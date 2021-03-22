@@ -8,8 +8,8 @@
             </div> -->
             <template for:each={allHeaders} for:item="header">
                 <div class="headerItem" key={header.id}>
-                    <input name="key" value={header.k} type="text" placeholder="enter key" onblur={updateHeaders}/>
-                    <input name="value" value={header.v} type="text" placeholder="enter value" onblur={updateHeaders}/>
+                    <input name="key" headerid={header.id} value={header.k} type="text" placeholder="enter key" onblur={updateHeaders}/>
+                    <input name="value" headerid={header.id} value={header.v} type="text" placeholder="enter value" onblur={updateHeaders}/>
                 </div>
             </template>
             

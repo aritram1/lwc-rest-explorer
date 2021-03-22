@@ -1,45 +1,40 @@
 import { LightningElement, track, api } from 'lwc';
 const DEFAULT_REQUEST_BODY = {"App" : "Postman-Lite", "Version": 1, "Released" : true}; //TESTING
-
-const DEFAULT_REQUEST_RAW = 'some specific raw';
 const ERROR_INVALID_JSON_BODY = 'The json is not well formed. Please check. Key-Value pairs must be enclosed with double quotes only.';
 export default class Postmanoptions extends LightningElement {
     
+    // To show the tabs : Auth, Header, Body and Raw request
     @track showAuth;
     @track showHeaders;
     @track showBody;
     @track showRaw;
 
+    // To ohld the request header,body and auth
+    @track headers;
+    @track body;
+    @track raw;
     @track auth;
     @track authType;
+    
+    // To show the auth-related templates
     @track showBasicAuth;
     @track showOAuth2;
-    @track error;
-
+    
     @track uname;
     @track pwd;
-
     @track cId='';
     @track cCode='';
     @track cbUrl='';
 
-    @track headers;
-    @track body;
-    @track raw;
+    // To track additional values related ot the request
+    @track error;
     @track copyOfbody;
 
+    // Public properties
     @api endpoint;
     @api method;
-
-    // @api get method(){
-    //     return this.method;
-    // }
-    // set method(v){
-    //     // eslint-disable-next-line @lwc/lwc/no-api-reassignments
-    //     this.method = v;
-    //     this.raw = this.generateRawRequest();
-    // }
     
+    // This method generates the raw request info from method, header, body and auth info
     generateRawRequest(){
         let raw_text = this.method + ' ' + this.endpoint + ' HTTP 1.1\n';
         if(this.auth){
@@ -49,18 +44,19 @@ export default class Postmanoptions extends LightningElement {
             raw_text = raw_text + 'body' + this.body + '\n';
         }
         if(this.headers){
-            raw_text = raw_text + 'headers' + this.headers + '\n';
+            raw_text = raw_text + 'headers' + JSON.stringify(this.headers, undefined, 4) + '\n';
         }
         // raw_text = raw_text.replaceAll('"', '').replace('{','').replace('}','');
         console.log(raw_text);
         return raw_text;
     }
     
-
+    // Getter to chekc if the current request is a GET request
     get isGETrequest(){
         return this.method === 'GET';
     }
 
+    // Constructor
     constructor(){
         super();
         console.log('I am first constructor');
@@ -69,10 +65,13 @@ export default class Postmanoptions extends LightningElement {
         this.pwd='';
     }
 
+    // Connectedcallback
     connectedCallback(){
         this.raw = this.generateRawRequest('GET', 'https://dog.ceo/api/breeds/image/random');
     }
 
+    // Handles tab movement inside the body text area. When tab is pressed, a tab character is added
+    // instad of the element getting out of focus. The first line below prevents the default action.
     handleTabMovement(e){
         if (e.key === 'Tab') {
             e.preventDefault();
@@ -89,6 +88,7 @@ export default class Postmanoptions extends LightningElement {
         }
     }
 
+    // This method handles when the auth type changes
     handleAuthTypeChange(e){
         console.log('handleAuthTypeChange->' + e.target.value)
         this.authType = e.target.value;
@@ -111,6 +111,8 @@ export default class Postmanoptions extends LightningElement {
         }
     }
 
+    // Once the auth is updated by clicking [Add] button, this method sends them 
+    // to the parent component (my-postman)
     updateAuth(e){
         switch(this.authType){
             case 'BASIC':
@@ -138,7 +140,7 @@ export default class Postmanoptions extends LightningElement {
                 break;
         }
         
-        
+        // Send the updated auth info to the parent component via event
         this.dispatchEvent(new CustomEvent('authchange',{
             detail:{
                 'authchange' : this.auth
@@ -147,9 +149,11 @@ export default class Postmanoptions extends LightningElement {
         //this.emit('authchange', this.auth); //Can be included when LWC can support dynamic event names
     }
 
-    handleDataTableUpdate(e){
-        console.log('Inside handleDataTableUpdate' + e.detail.headers);
-        this.headers = e.detail.headers;
+    // Once the headers are updated (from data-table child component), this method captures and resend them
+    // sends them to the parent component (my-postman) so this can be used while fetch()ing the endpoint
+    handleHeaderTableUpdate(event){
+        console.log('Header received as -> ' + JSON.stringify(event.detail));
+        this.headers = event.detail;
         this.dispatchEvent(new CustomEvent('headerschange',{
             detail:{
                 'headerschange' : this.headers
@@ -158,12 +162,13 @@ export default class Postmanoptions extends LightningElement {
         //this.emit('headerschange', this.headers); //Can be included when LWC can support dynamic event names
     }
 
+    // Once the request body is updated, this method captures and send themthe parent component (my-postman) 
+    // so this can be used while fetch()ing the endpoint
     handleRequestBodyUpdate(e){
-        this.body = e.target.value;
         console.log('Inside handleRequestBodyUpdate' + e.target.value);
-        let body = e.target.value.replace('\n', '').replace('\t', '');
+        this.body = e.target.value ? e.target.value.replace('\n', '').replace('\t', '') : '{}';
         try{
-            let ev_body = JSON.parse(body);
+            let ev_body = JSON.parse(this.body);
             console.log('After serialization: ' + JSON.stringify(ev_body));
             this.dispatchEvent(new CustomEvent('bodychange',{
                 detail:{
@@ -179,7 +184,13 @@ export default class Postmanoptions extends LightningElement {
         //this.emit('bodychange', this.body); //Can be included when LWC can support dynamic event names
     }
 
-    // NOT being used for now since LWC can not use event name dynamically
+    // This method takes event_name as variable and emits the event. 
+    // This is NOT being used now since LWC still can not use event name dynamically
+    // On execution it produces event as 
+    // detail : { 
+    //    'eventtype' : ...value...
+    // }
+    // Function ///////////////////////////////////////////////////////////////////
     // emit(eventtype, value){
     //     const custom_event = new CustomEvent(eventtype,{
     //         detail:{
@@ -190,6 +201,9 @@ export default class Postmanoptions extends LightningElement {
     //     this.dispatchEvent(custom_event);
     // }
     
+    // This method switches the variable to show appropriate tabs based on 
+    // which tab is clicked and which method is being executed, e.g. For GET Type
+    // requests Body tab is not required, hence kept hidden.
     handleTabClick(e){
         this.showAuth = false;
         this.showHeaders = false;
