@@ -19,32 +19,36 @@
         <div id="Authorization" class="tabContent auth">
             <div class="authchoices">
                 <div>Type</div>
-                <select name="methods" id="methods" onclick={handleAuthTypeChange}>
+                <select name="methods" id="methods" onchange={handleAuthTypeChange}>
                     <option value="NOAUTH">No Authorization</option>
                     <option value="BASIC">Basic</option>
                     <option value="OAUTH2">OAuth 2.0</option>
                 </select>
             </div>
-                <template if:true={showBasicAuth}>
-                    <div class="authdetails authbasic">
-                        <div> User Name </div>
-                        <input name="uname" placeholder="Enter username" type="text" value={uname}/>
-                        <div> Password </div>
-                        <input name="pwd" placeholder="Enter password" type="text" value={pwd}/>
-                        <br/>
-                        <input class="auth--button" name="btnAuthSubmit"  type="button" value="Add Credentials" onclick={updateAuth}/>
-                    </div>
-                </template>
-                <template if:true={showOAuth2}>
-                    <div class="authdetails autho2">
-                        <div> Client Id </div>
-                        <input name="cId" placeholder="Add client Id here" type="text" value={cId}/>
-                        <div> Client Code </div>
-                        <input name="cCode" placeholder="Add client Code here" type="text" value={cCode}/>
-                        <br/>
-                        <input class="auth--button" name="btnAuthSubmit"  type="button" value="Add OAuth2 details" onclick={updateAuth}/>
-                    </div>
-                </template>
+            <template if:true={showBasicAuth}>
+                <div class="authdetails authbasic">
+                    <div> User Name </div>
+                    <input name="uname" placeholder="Enter username" type="text" value={uname}/>
+                    <div> Password </div>
+                    <input name="pwd" placeholder="Enter password" type="text" value={pwd}/>
+                    <br/>
+                    <input class="auth--button" name="btnAuthSubmit"  type="button" value="Add Credentials" onclick={updateAuth}/>
+                </div>
+            </template>
+            <template if:true={showOAuth2}>
+                <div class="authdetails autho2">
+                    <div> User Name </div>
+                    <input name="uname" placeholder="Enter username" type="text" value={uname}/>
+                    <div> Password </div>
+                    <input name="pwd" placeholder="Enter password" type="text" value={pwd}/>
+                    <div> Client Id </div>
+                    <input name="cId" placeholder="Add client Id here" type="text" value={cId}/>
+                    <div> Client Code </div>
+                    <input name="cCode" placeholder="Add client Code here" type="text" value={cCode}/>
+                    <br/>
+                    <input class="auth--button" name="btnAuthSubmit"  type="button" value="Add OAuth2 details" onclick={updateAuth}/>
+                </div>
+            </template>
         </div>
     </template>
     

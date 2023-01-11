@@ -3,15 +3,13 @@ import { LightningElement, track  } from 'lwc';
 export default class DataTable extends LightningElement {
     
     @track allHeaders = [];
-    //@track contentType = 'application/json';
-    // @track processedHeaders = [];
     
     constructor(){
         super();
         this.allHeaders.push({
             'id' : this.generateId(),
             'k' : 'content-type',
-            'v' : 'application/json'
+            'v' : 'application/json | application/x-www-form-urlencoded'
         });
     }
 

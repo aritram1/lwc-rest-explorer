@@ -53,9 +53,9 @@
             "src/**/*.spec.js",
             "src/**/*.test.js"
         ],
-        "exec": "node ./scripts/server.js"
+        "exec": "lwc-services watch"
     },
-    "repository": "aritram1/my-app",
+    "repository": "https://github.com/aritram1/lwc-rest-explorer",
     "scripts": {
         "build": "lwc-services build -m production",
         "build:development": "lwc-services build",
