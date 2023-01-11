@@ -171,11 +171,12 @@ export default class Postman extends LightningElement {
         this.allEndpoints.add(this.generateEP('DELETE','https://jsonplaceholder.typicode.com/posts/1'));
     }
 
-    generateEP(m, e){
+    // This method generates endpoint adding a random number as label to show in dropdown
+    generateEP(method = "GET", endpoint){
         return {
             'key' : this.generateId(),
-            'method' : m ? m :'GET',
-            'ep' : e
+            'method' : method,
+            'ep' : endpoint
         }
     }
 
