@@ -3,17 +3,20 @@ import { LightningElement, track } from 'lwc';
 const DEFAULT_STYLE = "background-color: rgba(5, 122, 218, ";
 const DEFAULT_ERROR_STYLE = "background-color: rgba(255, 0, 0, ";
 const DEFAULT_RESPONSE = 'Response will appear here';
+const DEFAULT_ENDPOINT = 'https://login.salesforce.com/services/oauth2/token';
 
 export default class Postman extends LightningElement {
 
-    @track endpoint;
-    //Some test APIs
-    //http://0.0.0.0:3002/';
-    //'https://dog.ceo/api/breeds/image/random';
-    //'https://jsonplaceholder.typicode.com/posts/';
-
+    
     itemstyle = "background-color: rgba(5, 122, 218, 0)";
     alpha;
+    copyofBody;
+    showSettings;
+    @track errors = {
+        'body': '', // errors coming from constructing request body
+        'header': ''  // error coming from constructing header
+    };
+    @track endpoint;
     @track allEndpoints = new Set();
     @track history;
     @track response;
@@ -24,20 +27,20 @@ export default class Postman extends LightningElement {
     @track auth;
     @track showtooltip;
     @track endpointBeingEdited = false;
-    copyofBody;
-    showSettings;
     @track showAboutMe;
 
     @track theme = 0; //0 = Blue, 1 = Green
 
+    get pageContainsError(){
+        return (this.errors.body !== '' || this.errors.header !== '');
+    }
+
     showHeaderLinks(e){
         this.template.querySelector('div.headerlinks').style.display = 'block';
-        // e.target.nextSibling.style.display = 'block';
     }
 
     hideHeaderLinks(e){
         this.template.querySelector('div.headerlinks').style.display = 'none';
-        // e.target.nextSibling.style.display = 'block';
     }
 
     handleThemeChange(e){
@@ -154,21 +157,23 @@ export default class Postman extends LightningElement {
         this.timetaken = '00';
         this.method = 'GET';
         this.alpha = 0;
-        this.endpoint = 'https://dog.ceo/api/breeds/image/random';
+        this.endpoint = DEFAULT_ENDPOINT;
         this.allEndpoints.add(this.generateEP('', ''));
         this.initData();
     }
 
     initData(){
-        this.allEndpoints.add(this.generateEP('GET','http://0.0.0.0:3002/'));
-        this.allEndpoints.add(this.generateEP('GET','https://dog.ceo/api/breeds/image/random'));
-        this.allEndpoints.add(this.generateEP('GET','https://jsonplaceholder.typicode.com/posts'));
-        this.allEndpoints.add(this.generateEP('GET','https://jsonplaceholder.typicode.com/posts/1'));
-        this.allEndpoints.add(this.generateEP('GET','https://jsonplaceholder.typicode.com/posts/1/comments'));
-        this.allEndpoints.add(this.generateEP('POST','https://jsonplaceholder.typicode.com/posts'));
-        this.allEndpoints.add(this.generateEP('PUT','https://jsonplaceholder.typicode.com/posts/1'));
-        this.allEndpoints.add(this.generateEP('PATCH','https://jsonplaceholder.typicode.com/posts/1'));
-        this.allEndpoints.add(this.generateEP('DELETE','https://jsonplaceholder.typicode.com/posts/1'));
+        let allEPs = [];
+        allEPs.push(this.generateEP('GET','http://0.0.0.0:3002/'));
+        allEPs.push(this.generateEP('GET','https://dog.ceo/api/breeds/image/random'));
+        allEPs.push(this.generateEP('GET','https://jsonplaceholder.typicode.com/posts'));
+        allEPs.push(this.generateEP('GET','https://jsonplaceholder.typicode.com/posts/1'));
+        allEPs.push(this.generateEP('GET','https://jsonplaceholder.typicode.com/posts/1/comments'));
+        allEPs.push(this.generateEP('POST','https://jsonplaceholder.typicode.com/posts'));
+        allEPs.push(this.generateEP('PUT','https://jsonplaceholder.typicode.com/posts/1'));
+        allEPs.push(this.generateEP('PATCH','https://jsonplaceholder.typicode.com/posts/1'));
+        allEPs.push(this.generateEP('DELETE','https://jsonplaceholder.typicode.com/posts/1'));
+        this.allEndpoints = [...allEPs];
     }
 
     // This method generates endpoint adding a random number as label to show in dropdown
@@ -218,6 +223,9 @@ export default class Postman extends LightningElement {
             }
             else if(this.auth.type === 'OAUTH2'){
                 let {cId, cCode} = this.auth;
+                let {uname, pwd} = this.auth;
+                options.uname = uname;
+                options.pwd = pwd;
                 options.cId = cId;
                 options.cCode = cCode;
                 options.type = 'OAuth 2.0';
@@ -225,8 +233,13 @@ export default class Postman extends LightningElement {
         }
         if(this.headers){
             console.log('this.headers is received NOT NULL => ' + JSON.stringify(this.headers));
-            for(let p of this.headers){
-                console.log(`Property -> ${p} AND Value -> ${this.headers[p]}`);
+            for(let each of this.headers){
+                for(let key in each){
+                    if(Object.prototype.hasOwnProperty.call(each, key)){
+                        console.log(`Property -> ${key} AND Value -> ${each[key]}`);
+                    }
+                }
+                
             }
             options.headers = Object.assign({}, this.headers);
         }
@@ -359,6 +372,18 @@ export default class Postman extends LightningElement {
     handleAuthChange(e){
         this.auth = Object.assign({}, e.detail.authchange);
         console.log('Inside handleAuthChange->' + JSON.stringify(this.auth));
+        // Also update the body with the auth parameters
+        if(this.auth.type === 'OAUTH2' || this.auth.type === 'BASIC'){
+            let body = {};
+            body.username = this.auth.uname;
+            body.password = this.auth.pwd;
+            if(this.auth.type === 'OAUTH2'){
+                body.grant_type = this.auth.grantType;
+                body.consumerId = this.auth.cId;
+                body.consumerKey = this.auth.cCode;
+            }
+            this.body = body;
+        }
     }
 
     handleHeadersChange(e){
@@ -367,7 +392,13 @@ export default class Postman extends LightningElement {
     }
 
     handleBodyChange(e){
-        this.body = e.detail.bodychange;
+        if(e.detail.error){
+            this.errors.body += e.detail.error;
+        }
+        else{
+            this.errors.body = '';
+            this.body = e.detail.bodychange;
+        }
         console.log('Inside handleBodyChange->' + JSON.stringify(this.body));
     }
 

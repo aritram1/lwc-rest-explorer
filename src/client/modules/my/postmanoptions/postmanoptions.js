@@ -1,6 +1,8 @@
 import { LightningElement, track, api } from 'lwc';
 const DEFAULT_REQUEST_BODY = {"App" : "Postman-Lite", "Version": 1, "Released" : true}; //TESTING
 const ERROR_INVALID_JSON_BODY = 'The json is not well formed. Please check. Key-Value pairs must be enclosed with double quotes only.';
+const GRANT_TYPE_PASSWORD = 'password';
+const BEARER = 'Bearer';
 export default class Postmanoptions extends LightningElement {
     
     // To show the tabs : Auth, Header, Body and Raw request
@@ -9,7 +11,7 @@ export default class Postmanoptions extends LightningElement {
     @track showBody;
     @track showRaw;
 
-    // To ohld the request header,body and auth
+    // To hold the request header,body and auth
     @track headers;
     @track body;
     @track raw;
@@ -31,8 +33,8 @@ export default class Postmanoptions extends LightningElement {
     @track copyOfbody;
 
     // Public properties
-    @api endpoint;
     @api method;
+    @api endpoint;
     
     // This method generates the raw request info from method, header, body and auth info
     generateRawRequest(){
@@ -54,6 +56,14 @@ export default class Postmanoptions extends LightningElement {
     // Getter to chekc if the current request is a GET request
     get isGETrequest(){
         return this.method === 'GET';
+    }
+
+    emitPostManError(){
+        this.dispatchEvent(new CustomEvent('postmanerror', {
+            detail:{
+                'error' : this.error
+            }
+        }));
     }
 
     // Constructor
@@ -107,6 +117,7 @@ export default class Postmanoptions extends LightningElement {
                 break;
             default:
                 this.error = 'Auth must be one of the 3 available options';
+                this.emitPostManError();
                 break;
         }
     }
@@ -124,19 +135,27 @@ export default class Postmanoptions extends LightningElement {
                     'pwd' : this.pwd,
                     'type' : this.authType
                 });
+                console.log(`the auth is ${this.auth}`);
                 break;
             case 'OAUTH2':
+                this.uname = this.template.querySelector(".authdetails input[name='uname']").value;
+                this.pwd = this.template.querySelector(".authdetails input[name='pwd']").value;
                 this.cId = this.template.querySelector(".authdetails input[name='cId']").value;
                 this.cCode = this.template.querySelector(".authdetails input[name='cCode']").value;
-                console.log(`the client ID is ${this.cId} and client Code is ${this.cCode}`);
                 this.auth = Object.assign({},{
+                    'uname' : this.uname,
+                    'pwd' : this.pwd,
                     'cId' : this.cId,
                     'cCode' : this.cCode,
+                    'grantType' : GRANT_TYPE_PASSWORD,
                     'type' : this.authType
                 });
+                console.log(`the auth is ${this.auth}`);
                 break;
             default:
-                this.error = 'INSIDE updateAuth() : Auth must be one of the 3 available options';;
+                console.log(`the auth is ${this.auth}`);
+                this.error = 'INSIDE updateAuth() : Auth must be one of the 3 available options';
+                this.emitPostManError();
                 break;
         }
         
@@ -162,24 +181,29 @@ export default class Postmanoptions extends LightningElement {
         //this.emit('headerschange', this.headers); //Can be included when LWC can support dynamic event names
     }
 
-    // Once the request body is updated, this method captures and send themthe parent component (my-postman) 
+    // Once the request body is updated, this method captures and send them 
+    // to the parent component (my-postman) 
     // so this can be used while fetch()ing the endpoint
     handleRequestBodyUpdate(e){
         console.log('Inside handleRequestBodyUpdate' + e.target.value);
         this.body = e.target.value ? e.target.value.replace('\n', '').replace('\t', '') : '{}';
+        let ev_body = '';
         try{
-            let ev_body = JSON.parse(this.body);
+            ev_body = JSON.parse(this.body);
             console.log('After serialization: ' + JSON.stringify(ev_body));
-            this.dispatchEvent(new CustomEvent('bodychange',{
-                detail:{
-                    'bodychange' : ev_body
-                }
-            }));
             this.error = '';
         }
         catch(error){
             console.log('error->' + error);
             this.error = ERROR_INVALID_JSON_BODY;
+        }
+        finally{
+            this.dispatchEvent(new CustomEvent('bodychange',{
+                detail:{
+                    'bodychange' : ev_body,
+                    'error' : this.error
+                }
+            }));
         }
         //this.emit('bodychange', this.body); //Can be included when LWC can support dynamic event names
     }
@@ -248,6 +272,7 @@ export default class Postmanoptions extends LightningElement {
                 break;
             default:
                 this.error = 'Tab must be one of the 4 available options';
+                this.emitPostManError();
                 break;
         }
         this.raw = this.generateRawRequest();
