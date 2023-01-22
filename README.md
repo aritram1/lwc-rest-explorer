@@ -3,7 +3,7 @@ This is a simple app, inspired by postman, written in LWCOSS, can be used to tes
 
 # How to start?
 Start simply by cloning the repo and running `npm install` followed by `npm run watch`. This will start the project with a local development server. 
-The source files are located in the [`src`] folder. The web component (app) is within the [`src/client/modules`] folder. The folder hierarchy also represents the naming structure of the web components. The entry file for the custom Express configuration can be found in the [`src/server`] folder. Build the application running `npm run build2` (so it builds and moves ./dist to ./docs so it can be deployed to github branch).
+The source files are located in the [`src`] folder. The web component (app) is within the [`src/client/modules`] folder. The folder hierarchy also represents the naming structure of the web components. The entry file for the custom Express configuration can be found in the [`src/server`] folder. Build the application running `npm run buildall` (so it builds and moves ./dist to ./docs so it can be deployed to github branch).
 
 # Features
 - Test rest endpoints with GET, POST, PUT and DELETE methods

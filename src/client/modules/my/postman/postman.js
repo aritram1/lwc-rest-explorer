@@ -164,6 +164,7 @@ export default class Postman extends LightningElement {
 
     initData(){
         let allEPs = [];
+        allEPs.push(this.generateEP('POST','https://login.salesforce.com/services/oauth2/token'));
         allEPs.push(this.generateEP('GET','http://0.0.0.0:3002/'));
         allEPs.push(this.generateEP('GET','https://dog.ceo/api/breeds/image/random'));
         allEPs.push(this.generateEP('GET','https://jsonplaceholder.typicode.com/posts'));
@@ -401,5 +402,4 @@ export default class Postman extends LightningElement {
         }
         console.log('Inside handleBodyChange->' + JSON.stringify(this.body));
     }
-
 }

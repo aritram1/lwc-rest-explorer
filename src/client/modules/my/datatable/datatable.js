@@ -59,7 +59,7 @@ export default class DataTable extends LightningElement {
             currentHeaderItem.k = v;
             console.log('current header item : ' + JSON.stringify(currentHeaderItem));
         }
-        else if(n == 'value'){
+        else if(n === 'value'){
             console.log('Coming from value block');
             currentHeaderItem.v = v;
             console.log('current header item : ' + JSON.stringify(currentHeaderItem));
