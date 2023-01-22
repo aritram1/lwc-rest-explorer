@@ -59,7 +59,7 @@
     "scripts": {
         "build": "lwc-services build -m production",
         "postbuild" : "mv ./dist ./docs",
-        "buildall" : "rm -r ./docs && lwc-services build -m production && mv ./dist ./docs",
+        "buildall" : "lwc-services build -m production && rm -r ./docs && mv ./dist ./docs",
         "build:development": "lwc-services builddefault",
         "lint": "eslint ./src/**/*.js",
         "prettier": "prettier --write \"**/*.{css,html,js,json,md,ts,yaml,yml}\"",
