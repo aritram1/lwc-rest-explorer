@@ -1,7 +1,7 @@
 {
     "name": "my-app",
     "description": "My amazing LWC app",
-    "version": "0.0.1",
+    "version": "1.0.0",
     "author": "aritram1",
     "bugs": "https://github.com/aritram1/my-app/issues",
     "dependencies": {
@@ -58,7 +58,9 @@
     "repository": "https://github.com/aritram1/lwc-rest-explorer",
     "scripts": {
         "build": "lwc-services build -m production",
-        "build:development": "lwc-services build",
+        "postbuild" : "mv ./dist ./docs",
+        "buildall" : "rm -r ./docs && lwc-services build -m production && mv ./dist ./docs",
+        "build:development": "lwc-services builddefault",
         "lint": "eslint ./src/**/*.js",
         "prettier": "prettier --write \"**/*.{css,html,js,json,md,ts,yaml,yml}\"",
         "prettier:verify": "prettier --list-different \"**/*.{css,html,js,json,md,ts,yaml,yml}\"",
